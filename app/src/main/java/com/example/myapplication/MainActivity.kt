@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         buttonSymptomCalendar.setOnClickListener(){
             val intent = Intent(this, SymptomCalendar::class.java).apply {}
+            intent.putExtra("user_id",userId);
             startActivity(intent)
         }
     }

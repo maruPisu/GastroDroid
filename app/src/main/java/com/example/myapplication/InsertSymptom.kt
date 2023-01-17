@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.AuthFailureError
 import com.android.volley.Request
@@ -13,6 +14,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import kotlinx.android.synthetic.main.activity_insert_symptom.*
+import okhttp3.internal.Util
 import org.json.JSONObject
 import java.time.*
 import java.time.format.DateTimeFormatter
@@ -26,6 +28,7 @@ var GYear : Int = 0
 var GHour : Int = 0
 var GMinute : Int = 0
 var GZoneOffset : Int = 0
+var GUserId : String = ""
 
 class SymptomSet{
     var names = arrayListOf<String>()
@@ -39,7 +42,7 @@ class InsertSymptom : AppCompatActivity() {
 
         val myIntent = intent // gets the previously created intent
 
-        val userId = myIntent.getStringExtra("user_id").toString()
+        GUserId = myIntent.getStringExtra("user_id").toString()
         val year: Int = myIntent.getIntExtra("year", 0)
         val month: Int = myIntent.getIntExtra("month", 0)
         val day: Int = myIntent.getIntExtra("day", 0)
@@ -126,8 +129,11 @@ class InsertSymptom : AppCompatActivity() {
     }
 
     private fun fillSymptoms(){
+        val timestamp = ZonedDateTime.now(ZoneId.of("Europe/Madrid")).toEpochSecond()
+        Toast.makeText(applicationContext, timestamp.toString(), Toast.LENGTH_LONG).show()
         var symptomSet : SymptomSet
-        val url = "http://marupeace.com/goapi/table/symptom"
+        val url = Utils.composeUrl(
+            GUserId, "table/symptom")
         val queue = Volley.newRequestQueue(this)
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
             Request.Method.GET, url, null,
