@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InsertSymptom">
+
+    <TextView
+        android:id="@+id/text_date_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="today"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonSelectDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change Date"
+        tools:layout_editor_absoluteX="155dp"
+        tools:layout_editor_absoluteY="375dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_date_time"/>
+
+    <TextView
+        android:id="@+id/select_symptom_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Symptom"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSelectDate" />
+
+    <Spinner
+        android:id="@+id/spinner_select_symptom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/select_symptom_text"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/select_symptom_text" />
+
+    <Button
+        android:id="@+id/buttonSendForm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Symptom"
+        tools:layout_editor_absoluteX="155dp"
+        tools:layout_editor_absoluteY="375dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignIn">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+    android:elevation="12dp"
+    android:id="@+id/view2"
+    app:cardCornerRadius="40dp"
+    android:innerRadius="0dp"
+    android:shape="ring"
+    android:thicknessRatio="1.9"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true">
+    <ImageView
+        android:id="@+id/avataradsf"
+        android:layout_height="50dp"
+        android:layout_width="match_parent">
+    </ImageView>
+</androidx.cardview.widget.CardView>
+
+</RelativeLayout>
