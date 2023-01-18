@@ -25,6 +25,7 @@ import java.util.HashMap
 
 var localDateTime = LocalDate.now()
 var items = mutableListOf<String>()
+var GUser : String = ""
 
 class SymptomsInDay : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +35,7 @@ class SymptomsInDay : AppCompatActivity() {
 
         val myIntent = intent // gets the previously created intent
 
-        val userId = myIntent.getStringExtra("user_id").toString()
+        GUser = myIntent.getStringExtra("user_id").toString()
         val year: Int = myIntent.getIntExtra("year", today.year)
         val month: Int = myIntent.getIntExtra("month", today.monthValue)
         val day: Int = myIntent.getIntExtra("day", today.dayOfMonth)
@@ -48,7 +49,7 @@ class SymptomsInDay : AppCompatActivity() {
 
         floatingAddSymptom.setOnClickListener(){
             val intent = Intent(this@SymptomsInDay, InsertSymptom::class.java).apply {}
-            intent.putExtra("user_id","1");
+            intent.putExtra("user_id",GUser);
             intent.putExtra("year",year);
             intent.putExtra("month",month);
             intent.putExtra("day",day);
@@ -63,7 +64,8 @@ class SymptomsInDay : AppCompatActivity() {
 
     private fun fillList(){
         items.clear()
-        val url = "http://marupeace.com/goapi/table/v_user_symptoms"
+        val url = Utils.composeUrl(
+            GUserId, "table/v_user_symptoms")
         val queue = Volley.newRequestQueue(this)
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
             Request.Method.GET, url, null,
@@ -91,8 +93,9 @@ class SymptomsInDay : AppCompatActivity() {
         (0 until data.length()).forEach {
             val book = data.getJSONObject(it)
             val symptomName = book.get("s_name").toString()
+            val userId = book.get("u_id").toString()
             val dateTime = LocalDateTime.parse(book.get("datetime").toString(), formatter)
-            if (dateTime.toLocalDate() == localDateTime){
+            if (dateTime.toLocalDate() == localDateTime && userId == GUser){
                 items.add(dateTime.toLocalTime().toString() + " - " + symptomName)
             }
         }

@@ -95,14 +95,15 @@ class InsertSymptom : AppCompatActivity() {
 
     private fun createSymptom(){
         var symptomSet : SymptomSet
-        val url = "http://marupeace.com/goapi/table/registered_symptom"
+        val url = Utils.composeUrl(
+            GUserId, "table/registered_symptom")
         val queue = Volley.newRequestQueue(this)
         val localDateTime: LocalDateTime = LocalDateTime.of(GYear, GMonth, GDay, GHour, GMinute)
         val zonedDateTime: ZonedDateTime =
             ZonedDateTime.of(localDateTime, ZoneId.systemDefault())
 
         val params: MutableMap<String?, String?> = HashMap()
-        params["user"] = "1"
+        params["user"] = GUserId
         params["symptom"] = GSymptomID.toString()
         params["datetime"] = DateTimeFormatter.ISO_LOCAL_DATE_TIME
             .format(zonedDateTime) + "Z"
@@ -129,8 +130,6 @@ class InsertSymptom : AppCompatActivity() {
     }
 
     private fun fillSymptoms(){
-        val timestamp = ZonedDateTime.now(ZoneId.of("Europe/Madrid")).toEpochSecond()
-        Toast.makeText(applicationContext, timestamp.toString(), Toast.LENGTH_LONG).show()
         var symptomSet : SymptomSet
         val url = Utils.composeUrl(
             GUserId, "table/symptom")

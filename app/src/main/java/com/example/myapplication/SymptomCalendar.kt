@@ -57,7 +57,8 @@ class SymptomCalendar : AppCompatActivity() {
 
     private fun fillCalendar(){
         var symptomSet : SymptomSet
-        val url = "http://marupeace.com/goapi/table/v_user_symptoms"
+        val url = Utils.composeUrl(
+            GUserId, "table/v_user_symptoms")
         val queue = Volley.newRequestQueue(this)
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
             Request.Method.GET, url, null,
