@@ -25,13 +25,12 @@ class MainActivity : AppCompatActivity() {
 
         val name = myIntent.getStringExtra("name")
         val email = myIntent.getStringExtra("email")
-        val photoUrl = myIntent.getStringExtra("photoUrl")
+        val photoUrl = myIntent.getStringExtra("photo")
         val userId = myIntent.getStringExtra("id")
-        Toast.makeText(applicationContext,userId, Toast.LENGTH_SHORT).show()
         textViewWelcome.text = "Welcome " + name
         if (photoUrl != null) {
             if(photoUrl.isNotEmpty()) {
-                Picasso.get().load(myIntent.getStringExtra("photo")).into(avatar);
+                Picasso.get().load(photoUrl).into(avatar);
             }
         }
 
