@@ -17,6 +17,7 @@ import org.json.JSONObject
 import sun.bob.mcalendarview.MarkStyle
 import sun.bob.mcalendarview.listeners.OnDateClickListener
 import sun.bob.mcalendarview.vo.DateData
+import sun.bob.mcalendarview.vo.MarkedDates
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -32,17 +33,17 @@ class SymptomCalendar : AppCompatActivity() {
 
         floatingAddSymptom.setOnClickListener(){
             val intent = Intent(this, InsertSymptom::class.java).apply {}
-            intent.putExtra("user_id",GUserId);
+            intent.putExtra("user_id",GUserId)
             startActivity(intent)
         }
 
         symptomCalendarView.setOnDateClickListener(object : OnDateClickListener() {
             override fun onDateClick(view: View?, date: DateData) {
                 val intent = Intent(this@SymptomCalendar, SymptomsInDay::class.java).apply {}
-                intent.putExtra("user_id",GUserId);
-                intent.putExtra("year",date.year);
-                intent.putExtra("month",date.month);
-                intent.putExtra("day",date.day);
+                intent.putExtra("user_id",GUserId)
+                intent.putExtra("year",date.year)
+                intent.putExtra("month",date.month)
+                intent.putExtra("day",date.day)
                 startActivity(intent)
             }
         })
@@ -56,12 +57,11 @@ class SymptomCalendar : AppCompatActivity() {
     }
 
     private fun fillCalendar(){
-        var symptomSet : SymptomSet
         val url = Utils.composeUrl(
             GUserId, "table/v_user_symptoms")
         val queue = Volley.newRequestQueue(this)
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
-            Request.Method.GET, url, null,
+            Method.GET, url, null,
             Response.Listener {
                 Log.d("Mainactivity", "Api call successful ")
                 parseJson(it)
@@ -70,7 +70,7 @@ class SymptomCalendar : AppCompatActivity() {
             }
         ){
             @Throws(AuthFailureError::class)
-            override fun getHeaders(): Map<String, String>? {
+            override fun getHeaders(): Map<String, String> {
                 val headers: MutableMap<String, String> = HashMap()
                 headers["X-Session-Token"] = "abcd"
                 //headers["bla"] = "abcd"
@@ -82,6 +82,7 @@ class SymptomCalendar : AppCompatActivity() {
 
     private fun parseJson(jsonObject: JSONObject){
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        symptomCalendarView.markedDates.all.clear()
         val data = jsonObject.getJSONArray("data")
         (0 until data.length()).forEach {
             val book = data.getJSONObject(it)

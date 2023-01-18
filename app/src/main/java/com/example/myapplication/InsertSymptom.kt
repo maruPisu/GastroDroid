@@ -6,19 +6,15 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.AuthFailureError
-import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import kotlinx.android.synthetic.main.activity_insert_symptom.*
-import okhttp3.internal.Util
 import org.json.JSONObject
 import java.time.*
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import java.util.*
 
 var GSymptomID : Int = 0
@@ -43,9 +39,9 @@ class InsertSymptom : AppCompatActivity() {
         val myIntent = intent // gets the previously created intent
 
         GUserId = myIntent.getStringExtra("user_id").toString()
-        val year: Int = myIntent.getIntExtra("year", 0)
-        val month: Int = myIntent.getIntExtra("month", 0)
-        val day: Int = myIntent.getIntExtra("day", 0)
+        val Vyear: Int = myIntent.getIntExtra("year", 0)
+        val Vmonth: Int = myIntent.getIntExtra("month", 0)
+        val Vday: Int = myIntent.getIntExtra("day", 0)
 
         val localDateTime: LocalDateTime = LocalDateTime.now()
         GDay = localDateTime.dayOfMonth
@@ -54,14 +50,14 @@ class InsertSymptom : AppCompatActivity() {
         GHour = localDateTime.hour
         GMinute = localDateTime.minute
 
-        if(year == 0) {
+        if(Vyear == 0) {
             val datePicker =
-                DatePickerFragment { day, month, year -> onDateSelected(day, month, year) }
+                DatePickerFragment { day, month, year -> onDateSelected(Vday, Vmonth, Vyear) }
             datePicker.show(supportFragmentManager, "datePicker")
         }else{
-            GDay = day
-            GMonth = month
-            GYear = year
+            GDay = Vday
+            GMonth = Vmonth
+            GYear = Vyear
             val timePicker = TimePickerFragment { hour, minute -> onTimeSelected(hour, minute)}
             timePicker.show(supportFragmentManager, "timePicker")
         }
@@ -94,7 +90,6 @@ class InsertSymptom : AppCompatActivity() {
     }
 
     private fun createSymptom(){
-        var symptomSet : SymptomSet
         val url = Utils.composeUrl(
             GUserId, "table/registered_symptom")
         val queue = Volley.newRequestQueue(this)
@@ -107,10 +102,10 @@ class InsertSymptom : AppCompatActivity() {
         params["symptom"] = GSymptomID.toString()
         params["datetime"] = DateTimeFormatter.ISO_LOCAL_DATE_TIME
             .format(zonedDateTime) + "Z"
-        val parameters = JSONObject(params as Map<*, *>?)
+        val parameters = (params as Map<*, *>?)?.let { JSONObject(it) }
 
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
-            Request.Method.POST, url, parameters,
+            Method.POST, url, parameters,
             Response.Listener {
                 Log.d("Mainactivity", "Api call successful ")
             }, Response.ErrorListener {
@@ -118,7 +113,7 @@ class InsertSymptom : AppCompatActivity() {
             }
         ){
             @Throws(AuthFailureError::class)
-            override fun getHeaders(): Map<String, String>? {
+            override fun getHeaders(): Map<String, String> {
                 val headers: MutableMap<String, String> = HashMap()
                 headers["X-Session-Token"] = "abcd"
                 //headers["bla"] = "abcd"
@@ -135,7 +130,7 @@ class InsertSymptom : AppCompatActivity() {
             GUserId, "table/symptom")
         val queue = Volley.newRequestQueue(this)
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
-            Request.Method.GET, url, null,
+            Method.GET, url, null,
             Response.Listener {
                 Log.d("Mainactivity", "Api call successful ")
                 symptomSet = parseJson(it)
@@ -160,7 +155,7 @@ class InsertSymptom : AppCompatActivity() {
             }
         ){
             @Throws(AuthFailureError::class)
-            override fun getHeaders(): Map<String, String>? {
+            override fun getHeaders(): Map<String, String> {
                 val headers: MutableMap<String, String> = HashMap()
                 headers["X-Session-Token"] = "abcd"
                 //headers["bla"] = "abcd"
@@ -171,7 +166,7 @@ class InsertSymptom : AppCompatActivity() {
     }
 
     private fun parseJson(jsonObject: JSONObject): SymptomSet {
-        var ret : SymptomSet = SymptomSet()
+        val ret = SymptomSet()
         val data = jsonObject.getJSONArray("data")
         (0 until data.length()).forEach {
             val book = data.getJSONObject(it)
