@@ -1,6 +1,6 @@
 package com.example.myapplication.ui.login
 
-import android.app.Activity
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -17,7 +17,6 @@ import com.android.volley.toolbox.RequestFuture
 import com.android.volley.toolbox.Volley
 import com.example.myapplication.MainActivity
 import com.example.myapplication.data.LoginRepository
-import com.example.myapplication.data.Result
 
 import com.example.myapplication.R
 import org.json.JSONObject
@@ -30,6 +29,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
     private lateinit var mainIntent : Intent
+    @SuppressLint("StaticFieldLeak")
     private lateinit var thisContext: Context
 
     fun initIntent(context: Context){
@@ -40,18 +40,6 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     fun intentPutExtra(key: String, value: String){
         mainIntent.putExtra(key,value)
     }
-/*
-    fun login(username: String, password: String) {
-        // can be launched in a separate asynchronous job
-        val result = loginRepository.login(username, password)
-
-        if (result is Result.Success) {
-            _loginResult.value =
-                LoginResult(success = LoggedInUserView(displayName = result.data.displayName))
-        } else {
-            _loginResult.value = LoginResult(error = R.string.login_failed)
-        }
-    }*/
 
     fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {
@@ -70,13 +58,12 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         params["password"] = password
         params["name"] = name
         params["googleid"] = googleid
-        val parameters = JSONObject(params as Map<*, *>?)
+        val parameters = (params as Map<*, *>?)?.let { JSONObject(it) }
 
         val url = "http://marupeace.com/goapi/login"
         val queue = Volley.newRequestQueue(thisContext)
-        val future = RequestFuture.newFuture<JSONObject>()
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
-            Request.Method.POST, url, parameters,
+            Method.POST, url, parameters,
             Response.Listener {
                 Log.d("Mainactivity", "Api call successful ")
                 val jsonObject = it
@@ -88,7 +75,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
             }
         ){
             @Throws(AuthFailureError::class)
-            override fun getHeaders(): Map<String, String>? {
+            override fun getHeaders(): Map<String, String> {
                 val headers: MutableMap<String, String> = HashMap()
                 headers["X-Session-Token"] = "abcd"
                 return headers
@@ -99,7 +86,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     private fun signInDone(userid: String){
         //Toast.makeText(applicationContext,"user " + userId, Toast.LENGTH_SHORT).show()
 
-        mainIntent.putExtra("id",userid);
+        mainIntent.putExtra("id",userid)
         startActivity(thisContext, mainIntent, null)
     }
 

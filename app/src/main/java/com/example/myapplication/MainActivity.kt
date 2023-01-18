@@ -12,8 +12,6 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_sign_in.*
-import org.json.JSONObject
 
 
 class MainActivity : AppCompatActivity() {
@@ -24,19 +22,18 @@ class MainActivity : AppCompatActivity() {
         val myIntent = intent // gets the previously created intent
 
         val name = myIntent.getStringExtra("name")
-        val email = myIntent.getStringExtra("email")
         val photoUrl = myIntent.getStringExtra("photo")
         val userId = myIntent.getStringExtra("id")
-        textViewWelcome.text = "Welcome " + name
+        textViewWelcome.text = name
         if (photoUrl != null) {
             if(photoUrl.isNotEmpty()) {
-                Picasso.get().load(photoUrl).into(avatar);
+                Picasso.get().load(photoUrl).into(avatar)
             }
         }
 
         buttonSymptomCalendar.setOnClickListener(){
             val intent = Intent(this, SymptomCalendar::class.java).apply {}
-            intent.putExtra("user_id",userId);
+            intent.putExtra("user_id",userId)
             startActivity(intent)
         }
     }
