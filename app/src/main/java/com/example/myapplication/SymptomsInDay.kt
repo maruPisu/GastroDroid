@@ -93,9 +93,8 @@ class SymptomsInDay : AppCompatActivity() {
         (0 until data.length()).forEach {
             val book = data.getJSONObject(it)
             val symptomName = book.get("s_name").toString()
-            val userId = book.get("u_id").toString()
             val dateTime = LocalDateTime.parse(book.get("datetime").toString(), formatter)
-            if (dateTime.toLocalDate() == localDateTime && userId == GUser){
+            if (dateTime.toLocalDate() == localDateTime){
                 items.add(dateTime.toLocalTime().toString() + " - " + symptomName)
             }
         }

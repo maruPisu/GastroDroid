@@ -87,9 +87,10 @@ class SymptomCalendar : AppCompatActivity() {
             val book = data.getJSONObject(it)
             val dateTime = LocalDateTime.parse(book.get("datetime").toString(), formatter)
             symptomCalendarView.markDate(
-                DateData(dateTime.year, dateTime.monthValue, dateTime.dayOfMonth).setMarkStyle(MarkStyle(MarkStyle.DOT, Color.GREEN))
+                DateData(dateTime.year, dateTime.monthValue, dateTime.dayOfMonth).setMarkStyle(
+                    MarkStyle(MarkStyle.DOT, Color.GREEN)
+                )
             )
-
         }
     }
 }
