@@ -43,16 +43,16 @@ class SymptomsInDay : AppCompatActivity() {
         localDateTime = LocalDate.of(year, month, day)
 
         val datetimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-        symptoms_day_text.text = "Symptoms of " + localDateTime.format(datetimeFormatter)
+        symptoms_day_text.text = getString(R.string.symptom_of_day, localDateTime.format(datetimeFormatter))
 
         fillList()
 
         floatingAddSymptom.setOnClickListener(){
             val intent = Intent(this@SymptomsInDay, InsertSymptom::class.java).apply {}
-            intent.putExtra("user_id",GUser);
-            intent.putExtra("year",year);
-            intent.putExtra("month",month);
-            intent.putExtra("day",day);
+            intent.putExtra("user_id",GUser)
+            intent.putExtra("year",year)
+            intent.putExtra("month",month)
+            intent.putExtra("day",day)
             startActivity(intent)
         }
     }
@@ -68,16 +68,16 @@ class SymptomsInDay : AppCompatActivity() {
             GUserId, "table/v_user_symptoms")
         val queue = Volley.newRequestQueue(this)
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
-            Request.Method.GET, url, null,
+            Method.GET, url, null,
             Response.Listener {
-                Log.d("Mainactivity", "Api call successful ")
+                Log.d("Mainactivity", getString(R.string.api_call_successful))
                 parseJson(it)
             }, Response.ErrorListener {
-                Log.d("Mainactivity", "Api call unsuccessful "+it.toString())
+                Log.d("Mainactivity", getString(R.string.api_call_unsuccessful)+it.toString())
             }
         ){
             @Throws(AuthFailureError::class)
-            override fun getHeaders(): Map<String, String>? {
+            override fun getHeaders(): Map<String, String> {
                 val headers: MutableMap<String, String> = HashMap()
                 headers["X-Session-Token"] = "abcd"
                 //headers["bla"] = "abcd"

@@ -20,7 +20,7 @@
         android:id="@+id/buttonSymptomCalendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Symptom Calendar"
+        android:text="@string/open_calendar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewCentral" />
@@ -40,6 +40,7 @@
             android:id="@+id/avatar"
             android:layout_height="50dp"
             android:layout_width="match_parent"
+            android:contentDescription="@string/avatar"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
         </ImageView>

@@ -10,7 +10,7 @@
         android:id="@+id/text_date_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="today"
+        android:text="@string/today"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -18,7 +18,7 @@
         android:id="@+id/buttonSelectDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Change Date"
+        android:text="@string/change_date"
         tools:layout_editor_absoluteX="155dp"
         tools:layout_editor_absoluteY="375dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,7 +29,7 @@
         android:id="@+id/select_symptom_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select Symptom"
+        android:text="@string/select_symptom"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonSelectDate" />
 
@@ -47,7 +47,7 @@
         android:id="@+id/buttonSendForm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Send Symptom"
+        android:text="@string/send_symptom"
         tools:layout_editor_absoluteX="155dp"
         tools:layout_editor_absoluteY="375dp"
         app:layout_constraintEnd_toEndOf="parent"

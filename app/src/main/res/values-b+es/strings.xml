@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GastrApp</string>
+    <string name="main_text">texto principal</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="action_sign_in">Registrate o accedi</string>
+    <string name="action_sign_in_short">Registrate</string>
+    <string name="welcome">"Bienvenido !"</string>
+    <string name="invalid_username">Nombre usuario invalido</string>
+    <string name="invalid_password">La contraseña tiene que tener mas de 5 caracteres</string>
+    <string name="login_failed">Algo ha fallado</string>
+    <string name="title_activity_insert_symptom">InsertSymptom</string>
+    <string name="add_symptom">Añadir sintoma</string>
+    <string name="open_calendar">Abrir Calendario</string>
+    <string name="symptom_of_day">Sintomas del día %s</string>
+    <string name="api_call_successful">"Llamada ejecutada correctamente "</string>
+    <string name="api_call_unsuccessful">"Algo ha fallado en la llamada API "</string>
+    <string name="change_date">Modifica fecha</string>
+    <string name="select_symptom">Selecciona sintoma</string>
+    <string name="send_symptom">Envía Sintoma</string>
+    <string name="avatar">avatar</string>
+    <string name="today">hoy</string>
+</resources>

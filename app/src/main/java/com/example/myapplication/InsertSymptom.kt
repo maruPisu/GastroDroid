@@ -107,9 +107,9 @@ class InsertSymptom : AppCompatActivity() {
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
             Method.POST, url, parameters,
             Response.Listener {
-                Log.d("Mainactivity", "Api call successful ")
+                Log.d("Mainactivity", getString(com.example.myapplication.R.string.api_call_successful))
             }, Response.ErrorListener {
-                Log.d("Mainactivity", "Api call unsuccessful "+it.toString())
+                Log.d("Mainactivity", getString(com.example.myapplication.R.string.api_call_unsuccessful)+it.toString())
             }
         ){
             @Throws(AuthFailureError::class)
@@ -132,7 +132,7 @@ class InsertSymptom : AppCompatActivity() {
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
             Method.GET, url, null,
             Response.Listener {
-                Log.d("Mainactivity", "Api call successful ")
+                Log.d("Mainactivity", getString(com.example.myapplication.R.string.api_call_successful))
                 symptomSet = parseJson(it)
 
                 val adp1: ArrayAdapter<String> = ArrayAdapter<String>(
@@ -151,7 +151,7 @@ class InsertSymptom : AppCompatActivity() {
                     }
                 }
             }, Response.ErrorListener {
-                Log.d("Mainactivity", "Api call unsuccessful "+it.toString())
+                Log.d("Mainactivity", getString(com.example.myapplication.R.string.api_call_unsuccessful)+it.toString())
             }
         ){
             @Throws(AuthFailureError::class)
