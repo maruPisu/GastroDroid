@@ -31,12 +31,6 @@ class SymptomCalendar : AppCompatActivity() {
         val myIntent = intent // gets the previously created intent
         GUserId = myIntent.getStringExtra("user_id").toString()
 
-        floatingAddSymptom.setOnClickListener(){
-            val intent = Intent(this, InsertSymptom::class.java).apply {}
-            intent.putExtra("user_id",GUserId)
-            startActivity(intent)
-        }
-
         symptomCalendarView.setOnDateClickListener(object : OnDateClickListener() {
             override fun onDateClick(view: View?, date: DateData) {
                 val intent = Intent(this@SymptomCalendar, SymptomsInDay::class.java).apply {}
