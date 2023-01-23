@@ -5,10 +5,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.AuthFailureError
-import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -17,8 +15,7 @@ import org.json.JSONObject
 import sun.bob.mcalendarview.MarkStyle
 import sun.bob.mcalendarview.listeners.OnDateClickListener
 import sun.bob.mcalendarview.vo.DateData
-import sun.bob.mcalendarview.vo.MarkedDates
-import java.time.LocalDateTime
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -52,7 +49,7 @@ class SymptomCalendar : AppCompatActivity() {
 
     private fun fillCalendar(){
         val url = Utils.composeUrl(
-            GUserId, "table/v_user_symptoms")
+            GUserId, "table/v_user_anything")
         val queue = Volley.newRequestQueue(this)
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
             Method.GET, url, null,
@@ -75,14 +72,15 @@ class SymptomCalendar : AppCompatActivity() {
     }
 
     private fun parseJson(jsonObject: JSONObject){
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         symptomCalendarView.markedDates.all.clear()
         val data = jsonObject.getJSONArray("data")
         (0 until data.length()).forEach {
             val book = data.getJSONObject(it)
-            val dateTime = LocalDateTime.parse(book.get("datetime").toString(), formatter)
+            Log.d("a", book.get("date").toString())
+            val date = LocalDate.parse(book.get("date").toString(), formatter)
             symptomCalendarView.markDate(
-                DateData(dateTime.year, dateTime.monthValue, dateTime.dayOfMonth).setMarkStyle(
+                DateData(date.year, date.monthValue, date.dayOfMonth).setMarkStyle(
                     MarkStyle(MarkStyle.DOT, Color.GREEN)
                 )
             )
