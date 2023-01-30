@@ -15,7 +15,7 @@ class Utils {
 
         private fun composeHash(userId: String): String {
             val timestamp = ZonedDateTime.now(ZoneId.of("Europe/Madrid")).toEpochSecond() % 2147483648
-            val plainText = userId + "X249CIAoi_22j%J3" + timestamp.toString()
+            val plainText = userId + "H7igfhR3_saY3dk7" + timestamp.toString()
 
             return sha256(plainText)
         }
