@@ -10,7 +10,7 @@ import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import kotlinx.android.synthetic.main.activity_symptom_calendar.*
+import kotlinx.android.synthetic.main.activity_event_calendar.*
 import org.json.JSONObject
 import sun.bob.mcalendarview.MarkStyle
 import sun.bob.mcalendarview.listeners.OnDateClickListener
@@ -23,12 +23,12 @@ import java.util.*
 class EventCalendar : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_symptom_calendar)
+        setContentView(R.layout.activity_event_calendar)
 
         val myIntent = intent // gets the previously created intent
         GUserId = myIntent.getStringExtra("user_id").toString()
 
-        symptomCalendarView.setOnDateClickListener(object : OnDateClickListener() {
+        eventCalendarView.setOnDateClickListener(object : OnDateClickListener() {
             override fun onDateClick(view: View?, date: DateData) {
                 val intent = Intent(this@EventCalendar, SymptomsInDay::class.java).apply {}
                 intent.putExtra("user_id",GUserId)
@@ -73,13 +73,13 @@ class EventCalendar : AppCompatActivity() {
 
     private fun parseJson(jsonObject: JSONObject){
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        symptomCalendarView.markedDates.all.clear()
+        eventCalendarView.markedDates.all.clear()
         val data = jsonObject.getJSONArray("data")
         (0 until data.length()).forEach {
             val book = data.getJSONObject(it)
             Log.d("a", book.get("date").toString())
             val date = LocalDate.parse(book.get("date").toString(), formatter)
-            symptomCalendarView.markDate(
+            eventCalendarView.markDate(
                 DateData(date.year, date.monthValue, date.dayOfMonth).setMarkStyle(
                     MarkStyle(MarkStyle.DOT, Color.GREEN)
                 )

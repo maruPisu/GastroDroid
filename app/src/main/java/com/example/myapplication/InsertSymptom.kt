@@ -52,7 +52,7 @@ class InsertSymptom : AppCompatActivity() {
 
         if(Vyear == 0) {
             val datePicker =
-                DatePickerFragment { day, month, year -> onDateSelected(Vday, Vmonth, Vyear) }
+                DatePickerFragment { _, _, _ -> onDateSelected(Vday, Vmonth, Vyear) }
             datePicker.show(supportFragmentManager, "datePicker")
         }else{
             GDay = Vday
