@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 
-class SymptomCalendar : AppCompatActivity() {
+class EventCalendar : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_symptom_calendar)
@@ -30,7 +30,7 @@ class SymptomCalendar : AppCompatActivity() {
 
         symptomCalendarView.setOnDateClickListener(object : OnDateClickListener() {
             override fun onDateClick(view: View?, date: DateData) {
-                val intent = Intent(this@SymptomCalendar, SymptomsInDay::class.java).apply {}
+                val intent = Intent(this@EventCalendar, SymptomsInDay::class.java).apply {}
                 intent.putExtra("user_id",GUserId)
                 intent.putExtra("year",date.year)
                 intent.putExtra("month",date.month)

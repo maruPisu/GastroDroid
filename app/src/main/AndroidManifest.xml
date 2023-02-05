@@ -20,7 +20,7 @@
             android:name=".SymptomsInDay"
             android:exported="false" />
         <activity
-            android:name=".SymptomCalendar"
+            android:name=".EventCalendar"
             android:exported="false" />
         <activity
             android:name=".InsertSymptom"
