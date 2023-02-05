@@ -17,7 +17,7 @@
     <string name="symptom_of_day">Sintomas del día %s</string>
     <string name="api_call_successful">"Llamada ejecutada correctamente "</string>
     <string name="api_call_unsuccessful">"Algo ha fallado en la llamada API "</string>
-    <string name="change_date">Modifica fecha</string>
+    <string name="change_date">Modifica fecha y hora</string>
     <string name="select_symptom">Selecciona sintoma</string>
     <string name="send_symptom">Envía Sintoma</string>
     <string name="avatar">avatar</string>
