@@ -11,9 +11,9 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="title_activity_insert_symptom">InsertSymptom</string>
-    <string name="add_symptom">Add symptom</string>
+    <string name="add_event">Add event</string>
     <string name="open_calendar">Open Calendar</string>
-    <string name="symptom_of_day">Symptoms of %s</string>
+    <string name="events_of_day">Events of %s</string>
     <string name="api_call_successful">"Api call successful "</string>
     <string name="api_call_unsuccessful">"Api call unsuccessful "</string>
     <string name="change_date">Change date and time</string>
@@ -21,4 +21,5 @@
     <string name="send_symptom">Send Symptom</string>
     <string name="avatar">avatar</string>
     <string name="today">today</string>
+    <string name="null_string">null</string>
 </resources>

@@ -17,7 +17,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".SymptomsInDay"
+            android:name=".EventsInDay"
             android:exported="false" />
         <activity
             android:name=".EventCalendar"

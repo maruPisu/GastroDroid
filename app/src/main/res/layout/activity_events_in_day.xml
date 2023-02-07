@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SymptomsInDay">
+    tools:context=".EventsInDay">
 
     <LinearLayout
         android:layout_width="409dp"
@@ -17,22 +17,22 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/symptoms_day_text"
+            android:id="@+id/event_day_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="@string/null_string" />
 
         <ListView
-            android:id="@+id/symptom_day_list"
+            android:id="@+id/event_day_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingAddSymptom"
+        android:id="@+id/floatingAddEvent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:contentDescription="@string/add_symptom"
+        android:contentDescription="@string/add_event"
         android:src="@drawable/ic_plus"
         android:layout_margin="16dp" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

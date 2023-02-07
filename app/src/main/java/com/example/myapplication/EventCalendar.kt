@@ -30,7 +30,7 @@ class EventCalendar : AppCompatActivity() {
 
         eventCalendarView.setOnDateClickListener(object : OnDateClickListener() {
             override fun onDateClick(view: View?, date: DateData) {
-                val intent = Intent(this@EventCalendar, SymptomsInDay::class.java).apply {}
+                val intent = Intent(this@EventCalendar, EventsInDay::class.java).apply {}
                 intent.putExtra("user_id",GUserId)
                 intent.putExtra("year",date.year)
                 intent.putExtra("month",date.month)

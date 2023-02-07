@@ -1,7 +1,6 @@
 package com.example.myapplication
 
 import android.content.Intent
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,22 +9,22 @@ import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import kotlinx.android.synthetic.main.activity_symptoms_in_day.*
-import kotlinx.android.synthetic.main.activity_symptoms_in_day.floatingAddSymptom
+import kotlinx.android.synthetic.main.activity_events_in_day.*
+import kotlinx.android.synthetic.main.activity_events_in_day.floatingAddEvent
 import org.json.JSONObject
 import java.time.LocalDate
-import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.HashMap
 
-var localDateTime = LocalDate.now()
+var localDateTime: LocalDate = LocalDate.now()
 var items = mutableListOf<String>()
 var GUser : String = ""
 
-class SymptomsInDay : AppCompatActivity() {
+class EventsInDay : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_symptoms_in_day)
+        setContentView(R.layout.activity_events_in_day)
         val today : LocalDate = LocalDate.now()
 
         val myIntent = intent // gets the previously created intent
@@ -38,12 +37,12 @@ class SymptomsInDay : AppCompatActivity() {
         localDateTime = LocalDate.of(year, month, day)
 
         val datetimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-        symptoms_day_text.text = getString(R.string.symptom_of_day, localDateTime.format(datetimeFormatter))
+        event_day_text.text = getString(R.string.events_of_day, localDateTime.format(datetimeFormatter))
 
         fillList()
 
-        floatingAddSymptom.setOnClickListener(){
-            val intent = Intent(this@SymptomsInDay, InsertSymptom::class.java).apply {}
+        floatingAddEvent.setOnClickListener(){
+            val intent = Intent(this@EventsInDay, InsertSymptom::class.java).apply {}
             intent.putExtra("user_id",GUser)
             intent.putExtra("year",year)
             intent.putExtra("month",month)
@@ -60,7 +59,7 @@ class SymptomsInDay : AppCompatActivity() {
     private fun fillList(){
         items.clear()
         val url = Utils.composeUrl(
-            GUserId, "table/v_user_symptoms")
+            GUserId, "table/v_all_entries")
         val queue = Volley.newRequestQueue(this)
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
             Method.GET, url, null,
@@ -83,17 +82,19 @@ class SymptomsInDay : AppCompatActivity() {
     }
 
     private fun parseJson(jsonObject: JSONObject){
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
         val data = jsonObject.getJSONArray("data")
         (0 until data.length()).forEach {
             val book = data.getJSONObject(it)
-            val symptomName = book.get("s_name").toString()
-            val dateTime = LocalDateTime.parse(book.get("datetime").toString(), formatter)
-            if (dateTime.toLocalDate() == localDateTime){
-                items.add(dateTime.toLocalTime().toString() + " - " + symptomName)
+            val symptomName = book.get("value").toString()
+            val date = LocalDate.parse(book.get("date").toString(), dateFormatter)
+            val time = LocalTime.parse(book.get("time").toString(), timeFormatter)
+            if (date == localDateTime){
+                items.add("$time - $symptomName")
             }
         }
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, items)
-        symptom_day_list.adapter = adapter
+        event_day_list.adapter = adapter
     }
 }

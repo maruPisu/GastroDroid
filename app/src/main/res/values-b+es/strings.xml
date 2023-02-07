@@ -12,9 +12,9 @@
     <string name="invalid_password">La contraseña tiene que tener mas de 5 caracteres</string>
     <string name="login_failed">Algo ha fallado</string>
     <string name="title_activity_insert_symptom">InsertSymptom</string>
-    <string name="add_symptom">Añadir sintoma</string>
+    <string name="add_event">Añadir evento</string>
     <string name="open_calendar">Abrir Calendario</string>
-    <string name="symptom_of_day">Sintomas del día %s</string>
+    <string name="events_of_day">Eventos del día %s</string>
     <string name="api_call_successful">"Llamada ejecutada correctamente "</string>
     <string name="api_call_unsuccessful">"Algo ha fallado en la llamada API "</string>
     <string name="change_date">Modifica fecha y hora</string>
@@ -22,4 +22,5 @@
     <string name="send_symptom">Envía Sintoma</string>
     <string name="avatar">avatar</string>
     <string name="today">hoy</string>
+    <string name="null_string">null</string>
 </resources>
