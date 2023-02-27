@@ -27,12 +27,50 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingAddEvent"
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="18dp"
         android:layout_gravity="end|bottom"
-        android:contentDescription="@string/add_event"
-        android:src="@drawable/ic_plus"
-        android:layout_margin="16dp" />
+        app:fab_expandDirection="up"
+        app:fab_labelsPosition="left"
+        app:fab_labelStyle="@style/FloatStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingAddEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="#FFF"
+            app:fab_icon="@drawable/ic_plus"
+            app:fab_size="mini"
+            app:fab_title="@string/add_symptom_button"
+            />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="#FFF"
+            app:fab_icon="@drawable/ic_plus"
+            app:fab_size="mini"
+            app:fab_title="@string/add_meal_button"
+            />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="#FFF"
+            app:fab_icon="@drawable/ic_plus"
+            app:fab_size="mini"
+            app:fab_title="@string/add_supplement_button"
+            />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="#FFF"
+            app:fab_icon="@drawable/ic_plus"
+            app:fab_size="mini"
+            app:fab_title="@string/add_feces_button"
+            />
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

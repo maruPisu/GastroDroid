@@ -22,4 +22,8 @@
     <string name="avatar">avatar</string>
     <string name="today">today</string>
     <string name="null_string">null</string>
+    <string name="add_symptom_button">Add symptom</string>
+    <string name="add_meal_button">Add Meal</string>
+    <string name="add_supplement_button">Add Supplement</string>
+    <string name="add_feces_button">Add Feces</string>
 </resources>

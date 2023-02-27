@@ -23,4 +23,8 @@
     <string name="avatar">avatar</string>
     <string name="today">hoy</string>
     <string name="null_string">null</string>
+    <string name="add_symptom_button">Añadir Sintoma</string>
+    <string name="add_meal_button">Añadir Comida</string>
+    <string name="add_supplement_button">Añadir Suplemento</string>
+    <string name="add_feces_button">Añadir Heces</string>
 </resources>
