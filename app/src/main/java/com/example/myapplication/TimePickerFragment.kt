@@ -6,7 +6,6 @@ import android.content.Context
 import android.os.Bundle
 import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.activity_insert_symptom.*
 import java.time.LocalDateTime
 
 class TimePickerFragment(val listener: (hour:Int, minute:Int) -> Unit) : DialogFragment(),

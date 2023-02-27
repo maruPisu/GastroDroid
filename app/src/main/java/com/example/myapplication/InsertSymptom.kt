@@ -1,6 +1,5 @@
 package com.example.myapplication
 
-import android.R
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -11,7 +10,7 @@ import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import kotlinx.android.synthetic.main.activity_insert_symptom.*
+import com.example.myapplication.databinding.ActivityInsertSymptomBinding
 import org.json.JSONObject
 import java.time.*
 import java.time.format.DateTimeFormatter
@@ -32,9 +31,13 @@ class SymptomSet{
 }
 
 class InsertSymptom : AppCompatActivity() {
+
+    private lateinit var binding : ActivityInsertSymptomBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(com.example.myapplication.R.layout.activity_insert_symptom)
+        binding = ActivityInsertSymptomBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val myIntent = intent // gets the previously created intent
 
@@ -66,12 +69,12 @@ class InsertSymptom : AppCompatActivity() {
 
         fillSymptoms()
 
-        buttonSelectDate.setOnClickListener(){
+        binding.buttonSelectDate.setOnClickListener(){
             val datePicker = DatePickerFragment {day, month, year -> onDateSelected(day, month, year)}
             datePicker.show(supportFragmentManager, "datePicker")
         }
 
-        buttonSendForm.setOnClickListener(){
+        binding.buttonSendForm.setOnClickListener(){
             createSymptom()
         }
     }
@@ -107,9 +110,9 @@ class InsertSymptom : AppCompatActivity() {
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
             Method.POST, url, parameters,
             Response.Listener {
-                Log.d("Mainactivity", getString(com.example.myapplication.R.string.api_call_successful))
+                Log.d("Mainactivity", getString(R.string.api_call_successful))
             }, Response.ErrorListener {
-                Log.d("Mainactivity", getString(com.example.myapplication.R.string.api_call_unsuccessful)+it.toString())
+                Log.d("Mainactivity", getString(R.string.api_call_unsuccessful)+it.toString())
             }
         ){
             @Throws(AuthFailureError::class)
@@ -132,17 +135,17 @@ class InsertSymptom : AppCompatActivity() {
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
             Method.GET, url, null,
             Response.Listener {
-                Log.d("Mainactivity", getString(com.example.myapplication.R.string.api_call_successful))
+                Log.d("Mainactivity", getString(R.string.api_call_successful))
                 symptomSet = parseJson(it)
 
                 val adp1: ArrayAdapter<String> = ArrayAdapter<String>(
                     this,
-                    R.layout.simple_list_item_1, symptomSet.names
+                    android.R.layout.simple_list_item_1, symptomSet.names
                 )
-                adp1.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-                spinner_select_symptom.adapter = adp1
+                adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                binding.spinnerSelectSymptom.adapter = adp1
 
-                spinner_select_symptom.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+                binding.spinnerSelectSymptom.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                     override fun onNothingSelected(parent: AdapterView<*>?) {
 
                     }
@@ -151,7 +154,7 @@ class InsertSymptom : AppCompatActivity() {
                     }
                 }
             }, Response.ErrorListener {
-                Log.d("Mainactivity", getString(com.example.myapplication.R.string.api_call_unsuccessful)+it.toString())
+                Log.d("Mainactivity", getString(R.string.api_call_unsuccessful)+it.toString())
             }
         ){
             @Throws(AuthFailureError::class)
@@ -181,7 +184,7 @@ class InsertSymptom : AppCompatActivity() {
         val zonedDateTime: ZonedDateTime =
             ZonedDateTime.of(localDateTime, ZoneId.systemDefault())
 
-        text_date_time.text = DateTimeFormatter.RFC_1123_DATE_TIME
+        binding.textDateTime.text = DateTimeFormatter.RFC_1123_DATE_TIME
             .format(zonedDateTime)
     }
 }

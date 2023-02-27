@@ -10,7 +10,7 @@ import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import kotlinx.android.synthetic.main.activity_event_calendar.*
+import com.example.myapplication.databinding.ActivityEventCalendarBinding
 import org.json.JSONObject
 import sun.bob.mcalendarview.MarkStyle
 import sun.bob.mcalendarview.listeners.OnDateClickListener
@@ -21,14 +21,18 @@ import java.util.*
 
 
 class EventCalendar : AppCompatActivity() {
+
+    private lateinit var binding : ActivityEventCalendarBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_event_calendar)
+        binding = ActivityEventCalendarBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val myIntent = intent // gets the previously created intent
         GUserId = myIntent.getStringExtra("user_id").toString()
 
-        eventCalendarView.setOnDateClickListener(object : OnDateClickListener() {
+        binding.eventCalendarView.setOnDateClickListener(object : OnDateClickListener() {
             override fun onDateClick(view: View?, date: DateData) {
                 val intent = Intent(this@EventCalendar, EventsInDay::class.java).apply {}
                 intent.putExtra("user_id",GUserId)
@@ -73,13 +77,13 @@ class EventCalendar : AppCompatActivity() {
 
     private fun parseJson(jsonObject: JSONObject){
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        eventCalendarView.markedDates.all.clear()
+        binding.eventCalendarView.markedDates.all.clear()
         val data = jsonObject.getJSONArray("data")
         (0 until data.length()).forEach {
             val book = data.getJSONObject(it)
             Log.d("a", book.get("date").toString())
             val date = LocalDate.parse(book.get("date").toString(), formatter)
-            eventCalendarView.markDate(
+            binding.eventCalendarView.markDate(
                 DateData(date.year, date.monthValue, date.dayOfMonth).setMarkStyle(
                     MarkStyle(MarkStyle.DOT, Color.GREEN)
                 )

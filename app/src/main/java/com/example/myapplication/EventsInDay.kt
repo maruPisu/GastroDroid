@@ -9,8 +9,7 @@ import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import kotlinx.android.synthetic.main.activity_events_in_day.*
-import kotlinx.android.synthetic.main.activity_events_in_day.floatingAddEvent
+import com.example.myapplication.databinding.ActivityEventsInDayBinding
 import org.json.JSONObject
 import java.time.LocalDate
 import java.time.LocalTime
@@ -22,9 +21,13 @@ var items = mutableListOf<String>()
 var GUser : String = ""
 
 class EventsInDay : AppCompatActivity() {
+
+    private lateinit var binding : ActivityEventsInDayBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_events_in_day)
+        binding = ActivityEventsInDayBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         val today : LocalDate = LocalDate.now()
 
         val myIntent = intent // gets the previously created intent
@@ -37,11 +40,11 @@ class EventsInDay : AppCompatActivity() {
         localDateTime = LocalDate.of(year, month, day)
 
         val datetimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-        event_day_text.text = getString(R.string.events_of_day, localDateTime.format(datetimeFormatter))
+        binding.eventDayText.text = getString(R.string.events_of_day, localDateTime.format(datetimeFormatter))
 
         fillList()
 
-        floatingAddEvent.setOnClickListener(){
+        binding.floatingAddSymptom.setOnClickListener(){
             val intent = Intent(this@EventsInDay, InsertSymptom::class.java).apply {}
             intent.putExtra("user_id",GUser)
             intent.putExtra("year",year)
@@ -74,7 +77,6 @@ class EventsInDay : AppCompatActivity() {
             override fun getHeaders(): Map<String, String> {
                 val headers: MutableMap<String, String> = HashMap()
                 headers["X-Session-Token"] = "abcd"
-                //headers["bla"] = "abcd"
                 return headers
             }
         }
@@ -87,14 +89,14 @@ class EventsInDay : AppCompatActivity() {
         val data = jsonObject.getJSONArray("data")
         (0 until data.length()).forEach {
             val book = data.getJSONObject(it)
-            val symptomName = book.get("value").toString()
+            val value = book.get("value").toString()
             val date = LocalDate.parse(book.get("date").toString(), dateFormatter)
             val time = LocalTime.parse(book.get("time").toString(), timeFormatter)
             if (date == localDateTime){
-                items.add("$time - $symptomName")
+                items.add("$time - $value")
             }
         }
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, items)
-        event_day_list.adapter = adapter
+        binding.eventDayList.adapter = adapter
     }
 }

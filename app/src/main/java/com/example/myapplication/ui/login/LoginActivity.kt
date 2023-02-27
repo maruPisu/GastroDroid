@@ -22,7 +22,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import kotlinx.android.synthetic.main.activity_login.*
 
 
 const val RC_SIGN_IN = 123
@@ -44,8 +43,8 @@ class LoginActivity : AppCompatActivity() {
         // Build a GoogleSignInClient with the options specified by gso.
         val mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        login_button.setSize(SignInButton.SIZE_WIDE)
-        login_button.setOnClickListener{
+        binding.loginButton.setSize(SignInButton.SIZE_WIDE)
+        binding.loginButton.setOnClickListener{
             val signInIntent = mGoogleSignInClient.signInIntent
             resultLauncher.launch(signInIntent)
         }
