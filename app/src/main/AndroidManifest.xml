@@ -17,6 +17,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".InsertSupplement"
+            android:exported="false" />
+        <activity
+            android:name=".InsertFeces"
+            android:exported="false" />
+        <activity
+            android:name=".InsertMeal"
+            android:exported="false" />
+        <activity
             android:name=".EventsInDay"
             android:exported="false" />
         <activity

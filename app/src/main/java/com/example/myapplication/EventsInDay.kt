@@ -52,6 +52,33 @@ class EventsInDay : AppCompatActivity() {
             intent.putExtra("day",day)
             startActivity(intent)
         }
+
+        binding.floatingAddMeal.setOnClickListener(){
+            val intent = Intent(this@EventsInDay, InsertMeal::class.java).apply {}
+            intent.putExtra("user_id",GUser)
+            intent.putExtra("year",year)
+            intent.putExtra("month",month)
+            intent.putExtra("day",day)
+            startActivity(intent)
+        }
+
+        binding.floatingAddFeces.setOnClickListener(){
+            val intent = Intent(this@EventsInDay, InsertFeces::class.java).apply {}
+            intent.putExtra("user_id",GUser)
+            intent.putExtra("year",year)
+            intent.putExtra("month",month)
+            intent.putExtra("day",day)
+            startActivity(intent)
+        }
+
+        binding.floatingAddSupplement.setOnClickListener(){
+            val intent = Intent(this@EventsInDay, InsertSupplement::class.java).apply {}
+            intent.putExtra("user_id",GUser)
+            intent.putExtra("year",year)
+            intent.putExtra("month",month)
+            intent.putExtra("day",day)
+            startActivity(intent)
+        }
     }
 
     override fun onRestart() {

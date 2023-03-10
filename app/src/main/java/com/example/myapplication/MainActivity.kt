@@ -7,6 +7,7 @@ import com.example.myapplication.databinding.ActivityEventsInDayBinding
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.squareup.picasso.Picasso
 
+var GUserId : String = ""
 
 class MainActivity : AppCompatActivity() {
 

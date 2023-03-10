@@ -10,39 +10,46 @@ import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.example.myapplication.databinding.ActivityInsertSymptomBinding
+import com.example.myapplication.databinding.ActivityInsertMealBinding
 import org.json.JSONObject
-import java.time.*
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 
+class AllergenSet{
+    var names = arrayListOf<String>()
+    val IDs = arrayListOf<Int>()
+}
 
+class InsertMeal : AppCompatActivity() {
 
-class InsertSymptom : AppCompatActivity() {
-
-    class SymptomSet{
-        var names = arrayListOf<String>()
-        val IDs = arrayListOf<Int>()
-    }
-
-    var gSymptomID : Int = 0
+    val allergenSet = AllergenSet()
     var gDay : Int = 0
     var gMonth : Int = 0
     var gYear : Int = 0
     var gHour : Int = 0
     var gMinute : Int = 0
+    var gUserId : String = ""
+    private var userIsInteracting = false
+    private var mealId: Int = 0
 
-    private lateinit var binding : ActivityInsertSymptomBinding
+    var removableList = mutableListOf<RemovableListData>()
+
+    private lateinit var binding: ActivityInsertMealBinding
+    private lateinit var removableListAdapter : RemovableListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityInsertSymptomBinding.inflate(layoutInflater)
+        binding = ActivityInsertMealBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val myIntent = intent // gets the previously created intent
 
-        GUserId = myIntent.getStringExtra("user_id").toString()
+        allergenSet.names.add(" --- ")  // This is to avoid the automatic selection of a useful item
+
+        gUserId = myIntent.getStringExtra("user_id").toString()
         val vYear: Int = myIntent.getIntExtra("year", 0)
         val vMonth: Int = myIntent.getIntExtra("month", 0)
         val vDay: Int = myIntent.getIntExtra("day", 0)
@@ -66,9 +73,34 @@ class InsertSymptom : AppCompatActivity() {
             timePicker.show(supportFragmentManager, "timePicker")
         }
 
+        binding.spinnerSelectMeal.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+            override fun onItemSelected(parent: AdapterView<*>?,
+                                        view: View?, position: Int, id: Long) {
+                if (position != 0) {
+                    if(!removableListContains(allergenSet.IDs[position]))
+                        removableList.add(
+                            RemovableListData(
+                                allergenSet.IDs[position],
+                                allergenSet.names[position]
+                            )
+                        )
+                    removableListAdapter.notifyDataSetChanged()
+                }
+            }
+        }
+
+        removableListAdapter = RemovableListAdapter(this, removableList)
+
+        val listView = binding.listAllergen
+        listView.adapter = removableListAdapter
+
         updateSelectedDateTime()
 
-        fillSymptoms()
+        fillAllergens()
 
         binding.buttonSelectDate.setOnClickListener(){
             val datePicker = DatePickerFragment {day, month, year -> onDateSelected(day, month, year)}
@@ -76,9 +108,23 @@ class InsertSymptom : AppCompatActivity() {
         }
 
         binding.buttonSendForm.setOnClickListener(){
-            createSymptom()
+            createMeal()
         }
     }
+    override fun onUserInteraction() {
+        super.onUserInteraction()
+        userIsInteracting = true
+    }
+
+    private fun removableListContains(id: Int): Boolean{
+        for (element in removableList){
+            if(id == element.id){
+                return true
+            }
+        }
+        return false
+    }
+
     private fun onDateSelected(day:Int, month:Int, year:Int){
         gDay = day
         gMonth = month
@@ -93,25 +139,27 @@ class InsertSymptom : AppCompatActivity() {
         updateSelectedDateTime()
     }
 
-    private fun createSymptom(){
+    private fun createAllAllergensInMeal(){
+        for (element in removableList){
+            createAllergenInMeal(element)
+        }
+    }
+
+    private fun createAllergenInMeal(data: RemovableListData){
         val url = Utils.composeUrl(
-            GUserId, "table/registered_symptom")
+            gUserId, "table/allergen_in_meal")
         val queue = Volley.newRequestQueue(this)
-        val localDateTime: LocalDateTime = LocalDateTime.of(gYear, gMonth, gDay, gHour, gMinute)
-        val zonedDateTime: ZonedDateTime =
-            ZonedDateTime.of(localDateTime, ZoneId.systemDefault())
 
         val params: MutableMap<String?, String?> = HashMap()
-        params["user"] = GUserId
-        params["symptom"] = gSymptomID.toString()
-        params["datetime"] = DateTimeFormatter.ISO_LOCAL_DATE_TIME
-            .format(zonedDateTime) + "Z"
+        params["user"] = gUserId
+        params["meal"] = mealId.toString()
+        params["allergen"] = data.id.toString()
         val parameters = (params as Map<*, *>?)?.let { JSONObject(it) }
 
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
             Method.POST, url, parameters,
             Response.Listener {
-                Log.d("Mainactivity", getString(R.string.api_call_successful))
+                Log.d("Mainactivity", getString(R.string.api_call_successful)+it.toString())
             }, Response.ErrorListener {
                 Log.d("Mainactivity", getString(R.string.api_call_unsuccessful)+it.toString())
             }
@@ -128,32 +176,56 @@ class InsertSymptom : AppCompatActivity() {
         finish()
     }
 
-    private fun fillSymptoms(){
-        var symptomSet : SymptomSet
+    private fun createMeal(){
         val url = Utils.composeUrl(
-            GUserId, "table/symptom")
+            gUserId, "table/registered_meal")
+        val queue = Volley.newRequestQueue(this)
+        val localDateTime: LocalDateTime = LocalDateTime.of(gYear, gMonth, gDay, gHour, gMinute)
+        val zonedDateTime: ZonedDateTime =
+            ZonedDateTime.of(localDateTime, ZoneId.systemDefault())
+
+        val params: MutableMap<String?, String?> = HashMap()
+        params["user"] = gUserId
+        params["datetime"] = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+            .format(zonedDateTime) + "Z"
+        val parameters = (params as Map<*, *>?)?.let { JSONObject(it) }
+
+        val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
+            Method.POST, url, parameters,
+            Response.Listener {
+                parseCreateMealJson(it)
+                createAllAllergensInMeal()
+            }, Response.ErrorListener {
+                Log.d("Mainactivity", getString(R.string.api_call_unsuccessful)+it.toString())
+            }
+        ){
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): Map<String, String> {
+                val headers: MutableMap<String, String> = HashMap()
+                headers["X-Session-Token"] = "abcd"
+                //headers["bla"] = "abcd"
+                return headers
+            }
+        }
+        queue.add(jsonObjectRequest)
+        finish()
+    }
+
+    private fun fillAllergens(){
+        val url = Utils.composeUrl(
+            GUserId, "table/allergen")
         val queue = Volley.newRequestQueue(this)
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
             Method.GET, url, null,
             Response.Listener {
-                Log.d("Mainactivity", getString(R.string.api_call_successful))
-                symptomSet = parseJson(it)
 
-                val adp1: ArrayAdapter<String> = ArrayAdapter<String>(
+                parseFillAllergenJson(it)
+                val spinnerAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
                     this,
-                    android.R.layout.simple_list_item_1, symptomSet.names
+                    android.R.layout.simple_list_item_1, allergenSet.names
                 )
-                adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                binding.spinnerSelectSymptom.adapter = adp1
-
-                binding.spinnerSelectSymptom.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-                    }
-                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                        gSymptomID = symptomSet.IDs.get(position)
-                    }
-                }
+                spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                binding.spinnerSelectMeal.adapter = spinnerAdapter
             }, Response.ErrorListener {
                 Log.d("Mainactivity", getString(R.string.api_call_unsuccessful)+it.toString())
             }
@@ -168,16 +240,18 @@ class InsertSymptom : AppCompatActivity() {
         }
         queue.add(jsonObjectRequest)
     }
+    private fun parseCreateMealJson(jsonObject: JSONObject) {
+        val data = jsonObject.getJSONObject("data")
+        mealId = data.get("last_id").toString().toInt()
+    }
 
-    private fun parseJson(jsonObject: JSONObject): SymptomSet {
-        val ret = SymptomSet()
+    private fun parseFillAllergenJson(jsonObject: JSONObject) {
         val data = jsonObject.getJSONArray("data")
         (0 until data.length()).forEach {
-            val book = data.getJSONObject(it)
-            ret.names.add(book.get("name").toString())
-            ret.IDs.add(book.get("id").toString().toInt())
+            val allergen = data.getJSONObject(it)
+            allergenSet.IDs.add(allergen.get("id").toString().toInt())
+            allergenSet.names.add(allergen.get("name").toString())
         }
-        return ret
     }
 
     private fun updateSelectedDateTime(){

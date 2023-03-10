@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">GastrApp</string>
-    <string name="main_text">texto principal</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Contraseña</string>
@@ -19,7 +18,13 @@
     <string name="api_call_unsuccessful">"Algo ha fallado en la llamada API "</string>
     <string name="change_date">Modifica fecha y hora</string>
     <string name="select_symptom">Selecciona sintoma</string>
+    <string name="select_meal">Selecciona Comida</string>
+    <string name="select_feces">Selecciona el tipo de heces</string>
+    <string name="select_supplement">Selecciona suplemento</string>
     <string name="send_symptom">Envía Sintoma</string>
+    <string name="send_meal">Envía Comida</string>
+    <string name="send_feces">Envía heces</string>
+    <string name="send_supplement">Envía suplemento</string>
     <string name="avatar">avatar</string>
     <string name="today">hoy</string>
     <string name="null_string">null</string>
