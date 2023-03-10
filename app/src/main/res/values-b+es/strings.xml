@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">GastrApp</string>
-    <string name="title_activity_login">LoginActivity</string>
+    <string name="app_name">GastroTrack</string>
+    <string name="title_activity_login">GastroTrack</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Contraseña</string>
     <string name="action_sign_in">Registrate o accedi</string>
