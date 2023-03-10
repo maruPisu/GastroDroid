@@ -29,7 +29,7 @@
         android:id="@+id/select_meal_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/select_meal"
+        android:text="@string/select_allergen"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonSelectDate" />
 

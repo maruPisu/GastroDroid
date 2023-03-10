@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.AuthFailureError
 import com.android.volley.Response
@@ -21,8 +22,11 @@ class AllergenSet{
     var names = arrayListOf<String>()
     val IDs = arrayListOf<Int>()
 }
+interface MyListAdapterListener {
+    fun onEventOccurred(position: Int)
+}
 
-class InsertMeal : AppCompatActivity() {
+class InsertMeal : AppCompatActivity() , MyListAdapterListener{
 
     val allergenSet = AllergenSet()
     var gDay : Int = 0
@@ -90,11 +94,12 @@ class InsertMeal : AppCompatActivity() {
                             )
                         )
                     removableListAdapter.notifyDataSetChanged()
+                    binding.spinnerSelectMeal.setSelection(0)
                 }
             }
         }
 
-        removableListAdapter = RemovableListAdapter(this, removableList)
+        removableListAdapter = RemovableListAdapter(this, removableList, this)
 
         val listView = binding.listAllergen
         listView.adapter = removableListAdapter
@@ -262,5 +267,10 @@ class InsertMeal : AppCompatActivity() {
 
         binding.textDateTime.text = DateTimeFormatter.RFC_1123_DATE_TIME
             .format(zonedDateTime)
+    }
+
+    override fun onEventOccurred(position: Int) {
+        removableList.removeAt(position)
+        removableListAdapter.notifyDataSetChanged()
     }
 }

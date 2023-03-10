@@ -17,7 +17,7 @@
     <string name="api_call_unsuccessful">"Api call unsuccessful "</string>
     <string name="change_date">Change date and time</string>
     <string name="select_symptom">Select symptom</string>
-    <string name="select_meal">Select meal</string>
+    <string name="select_allergen">Select allergen</string>
     <string name="select_feces">Select the type of feces</string>
     <string name="select_supplement">Select supplement</string>
     <string name="send_symptom">Send symptom</string>
