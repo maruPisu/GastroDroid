@@ -48,6 +48,7 @@ class InsertMeal : AppCompatActivity() {
         val myIntent = intent // gets the previously created intent
 
         allergenSet.names.add(" --- ")  // This is to avoid the automatic selection of a useful item
+        allergenSet.IDs.add(-1)  // This is to avoid the automatic selection of a useful item
 
         gUserId = myIntent.getStringExtra("user_id").toString()
         val vYear: Int = myIntent.getIntExtra("year", 0)
