@@ -31,4 +31,6 @@
     <string name="add_meal_button">Add Meal</string>
     <string name="add_supplement_button">Add Supplement</string>
     <string name="add_feces_button">Add Feces</string>
+    <string name="delete_entry">Delete Entry</string>
+    <string name="delete_entry_confirmation">Do you really want to delete this entry?</string>
 </resources>

@@ -18,7 +18,7 @@
     <string name="api_call_unsuccessful">"Algo ha fallado en la llamada API "</string>
     <string name="change_date">Modifica fecha y hora</string>
     <string name="select_symptom">Selecciona sintoma</string>
-    <string name="select_allergen">Selecciona Alergéno</string>
+    <string name="select_allergen">Selecciona Alérgeno</string>
     <string name="select_feces">Selecciona el tipo de heces</string>
     <string name="select_supplement">Selecciona suplemento</string>
     <string name="send_symptom">Envía Sintoma</string>
@@ -32,4 +32,6 @@
     <string name="add_meal_button">Añadir Comida</string>
     <string name="add_supplement_button">Añadir Suplemento</string>
     <string name="add_feces_button">Añadir Heces</string>
+    <string name="delete_entry">Borrar Elemento</string>
+    <string name="delete_entry_confirmation">¿Queres borrar este elemento?</string>
 </resources>
