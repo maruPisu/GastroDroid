@@ -59,7 +59,6 @@ class EventsInDay : AppCompatActivity() {
 
         fillList()
 
-
         binding.eventDayList.setOnItemClickListener{ parent, _, position, _ ->
             alertDialog.setTitle(getString(R.string.delete_entry))
             alertDialog.setMessage(getString(R.string.delete_entry_confirmation))
@@ -67,6 +66,7 @@ class EventsInDay : AppCompatActivity() {
                 "yes"
             ) { _, _ ->
                 deleteElement(items.tables[position], items.IDs[position])
+                fillList()
             }
             alertDialog.setNegativeButton(
                 "No"
@@ -116,6 +116,7 @@ class EventsInDay : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         fillList()
+        binding.floatingActionsMenu.collapse()
     }
 
     private fun fillList(){
