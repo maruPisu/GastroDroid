@@ -66,7 +66,6 @@ class EventsInDay : AppCompatActivity() {
                 "yes"
             ) { _, _ ->
                 deleteElement(items.tables[position], items.IDs[position])
-                fillList()
             }
             alertDialog.setNegativeButton(
                 "No"
@@ -115,8 +114,8 @@ class EventsInDay : AppCompatActivity() {
 
     override fun onRestart() {
         super.onRestart()
-        fillList()
         binding.floatingActionsMenu.collapse()
+        fillList()
     }
 
     private fun fillList(){
@@ -174,6 +173,7 @@ class EventsInDay : AppCompatActivity() {
             Method.DELETE, url, null,
             Response.Listener {
                 Log.d("Mainactivity", getString(R.string.api_call_successful))
+                fillList()
             }, Response.ErrorListener {
                 Log.d("Mainactivity", getString(R.string.api_call_unsuccessful)+it.toString())
             }
@@ -186,6 +186,5 @@ class EventsInDay : AppCompatActivity() {
             }
         }
         queue.add(jsonObjectRequest)
-
     }
 }

@@ -149,6 +149,7 @@ class InsertMeal : AppCompatActivity() , MyListAdapterListener{
         for (element in removableList){
             createAllergenInMeal(element)
         }
+        finish()
     }
 
     private fun createAllergenInMeal(data: RemovableListData){
@@ -179,7 +180,6 @@ class InsertMeal : AppCompatActivity() , MyListAdapterListener{
             }
         }
         queue.add(jsonObjectRequest)
-        finish()
     }
 
     private fun createMeal(){
@@ -214,7 +214,6 @@ class InsertMeal : AppCompatActivity() , MyListAdapterListener{
             }
         }
         queue.add(jsonObjectRequest)
-        finish()
     }
 
     private fun fillAllergens(){
@@ -246,6 +245,7 @@ class InsertMeal : AppCompatActivity() , MyListAdapterListener{
         }
         queue.add(jsonObjectRequest)
     }
+
     private fun parseCreateMealJson(jsonObject: JSONObject) {
         val data = jsonObject.getJSONObject("data")
         mealId = data.get("last_id").toString().toInt()
