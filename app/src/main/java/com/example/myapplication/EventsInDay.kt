@@ -1,12 +1,12 @@
 package com.example.myapplication
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -16,15 +16,20 @@ import org.json.JSONObject
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import java.util.HashMap
+import android.content.Context
+import android.view.View
+import android.widget.TextView
+
 
 class Events{
     fun clear(){
+        types.clear()
         descriptions.clear()
         IDs.clear()
         tables.clear()
     }
 
+    var types = arrayListOf<String>()
     var descriptions = arrayListOf<String>()
     val tables = arrayListOf<String>()
     val IDs = arrayListOf<Int>()
@@ -36,6 +41,7 @@ class EventsInDay : AppCompatActivity() {
     private var items = Events()
     private var gUser : String = ""
     private lateinit var binding : ActivityEventsInDayBinding
+    private lateinit var twoItemsListAdapter: TwoItemsListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +62,10 @@ class EventsInDay : AppCompatActivity() {
 
         val datetimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
         binding.eventDayText.text = getString(R.string.events_of_day, localDateTime.format(datetimeFormatter))
+
+        twoItemsListAdapter = TwoItemsListAdapter(this, items)
+        binding.eventDayList.adapter = twoItemsListAdapter
+
 
         fillList()
 
@@ -150,18 +160,21 @@ class EventsInDay : AppCompatActivity() {
             val event = data.getJSONObject(it)
             val value = event.get("value").toString()
             val table = event.get("table").toString()
+            val type = when (GLanguage) {
+                Language.ENGLISH -> event.get("type-en").toString()
+                Language.SPANISH -> event.get("type-es").toString()
+            }
             val id = event.get("id").toString().toInt()
             val date = LocalDate.parse(event.get("date").toString(), dateFormatter)
             val time = LocalTime.parse(event.get("time").toString(), timeFormatter)
             if (date == localDateTime){
+                items.types.add(type)
                 items.descriptions.add("$time - $value")
                 items.IDs.add(id)
                 items.tables.add(table)
             }
         }
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1,
-            items.descriptions)
-        binding.eventDayList.adapter = adapter
+        twoItemsListAdapter.notifyDataSetChanged()
     }
 
     private fun deleteElement(table: String, itemId: Int){

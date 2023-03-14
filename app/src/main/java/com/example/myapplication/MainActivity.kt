@@ -3,11 +3,17 @@ package com.example.myapplication
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplication.databinding.ActivityEventsInDayBinding
+import androidx.preference.PreferenceManager
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.squareup.picasso.Picasso
+import java.util.*
+
+enum class Language {
+    ENGLISH, SPANISH
+}
 
 var GUserId : String = ""
+var GLanguage: Language = Language.ENGLISH
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,6 +40,11 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, EventCalendar::class.java).apply {}
             intent.putExtra("user_id",userId)
             startActivity(intent)
+        }
+
+        val language = Locale.getDefault().language
+        if (language == "es") {
+            GLanguage = Language.SPANISH
         }
     }
 }
