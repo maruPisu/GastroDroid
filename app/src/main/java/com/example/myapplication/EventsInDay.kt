@@ -158,11 +158,14 @@ class EventsInDay : AppCompatActivity() {
         val data = jsonObject.getJSONArray("data")
         (0 until data.length()).forEach {
             val event = data.getJSONObject(it)
-            val value = event.get("value").toString()
+            val value = when (GLanguage) {
+                Language.ENGLISH -> event.get("value_en").toString()
+                Language.SPANISH -> event.get("value_es").toString()
+            }
             val table = event.get("table").toString()
             val type = when (GLanguage) {
-                Language.ENGLISH -> event.get("type-en").toString()
-                Language.SPANISH -> event.get("type-es").toString()
+                Language.ENGLISH -> event.get("type_en").toString()
+                Language.SPANISH -> event.get("type_es").toString()
             }
             val id = event.get("id").toString().toInt()
             val date = LocalDate.parse(event.get("date").toString(), dateFormatter)

@@ -131,7 +131,7 @@ class InsertSymptom : AppCompatActivity() {
     private fun fillSymptoms(){
         var symptomSet : SymptomSet
         val url = Utils.composeUrl(
-            GUserId, "table/symptom")
+            GUserId, "table/symptom_all_languages")
         val queue = Volley.newRequestQueue(this)
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
             Method.GET, url, null,
@@ -173,9 +173,12 @@ class InsertSymptom : AppCompatActivity() {
         val ret = SymptomSet()
         val data = jsonObject.getJSONArray("data")
         (0 until data.length()).forEach {
-            val book = data.getJSONObject(it)
-            ret.names.add(book.get("name").toString())
-            ret.IDs.add(book.get("id").toString().toInt())
+            val symptom = data.getJSONObject(it)
+            ret.names.add(when (GLanguage) {
+                Language.ENGLISH -> symptom.get("name_en").toString()
+                Language.SPANISH -> symptom.get("name_es").toString()
+            })
+            ret.IDs.add(symptom.get("id").toString().toInt())
         }
         return ret
     }

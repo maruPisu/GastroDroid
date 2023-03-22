@@ -132,7 +132,7 @@ class InsertFeces : AppCompatActivity() {
     private fun fillFeces(){
         var fecesSet : FecesSet
         val url = Utils.composeUrl(
-            GUserId, "table/feces")
+            GUserId, "table/feces_all_languages")
         val queue = Volley.newRequestQueue(this)
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
             Method.GET, url, null,
@@ -174,9 +174,12 @@ class InsertFeces : AppCompatActivity() {
         val ret = FecesSet()
         val data = jsonObject.getJSONArray("data")
         (0 until data.length()).forEach {
-            val book = data.getJSONObject(it)
-            ret.names.add(book.get("name").toString())
-            ret.IDs.add(book.get("id").toString().toInt())
+            val feces = data.getJSONObject(it)
+            ret.names.add(when (GLanguage) {
+                Language.ENGLISH -> feces.get("name_en").toString()
+                Language.SPANISH -> feces.get("name_es").toString()
+        })
+            ret.IDs.add(feces.get("id").toString().toInt())
         }
         return ret
     }
