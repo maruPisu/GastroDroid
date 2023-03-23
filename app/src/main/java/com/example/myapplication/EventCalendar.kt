@@ -14,8 +14,10 @@ import com.example.myapplication.databinding.ActivityEventCalendarBinding
 import org.json.JSONObject
 import sun.bob.mcalendarview.MarkStyle
 import sun.bob.mcalendarview.listeners.OnDateClickListener
+import sun.bob.mcalendarview.listeners.OnMonthChangeListener
 import sun.bob.mcalendarview.vo.DateData
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -31,6 +33,9 @@ class EventCalendar : AppCompatActivity() {
         val myIntent = intent // gets the previously created intent
         GUserId = myIntent.getStringExtra("user_id").toString()
 
+        val current = LocalDateTime.now()
+        updateMonth(current.year, current.monthValue)
+
         binding.eventCalendarView.setOnDateClickListener(object : OnDateClickListener() {
             override fun onDateClick(view: View?, date: DateData) {
                 val intent = Intent(this@EventCalendar, EventsInDay::class.java).apply {}
@@ -41,6 +46,11 @@ class EventCalendar : AppCompatActivity() {
                 startActivity(intent)
             }
         })
+        binding.eventCalendarView.setOnMonthChangeListener(object: OnMonthChangeListener() {
+            override fun onMonthChange(year: Int, month: Int) {
+                updateMonth(year, month)
+            }
+        })
 
         fillCalendar()
         //handle date click in calendar (new activity?)
@@ -48,6 +58,14 @@ class EventCalendar : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         fillCalendar()
+    }
+
+    private fun updateMonth(year: Int, month: Int){
+        binding.eventTextDay.setText(buildString {
+        append(Utils.getMonthName(month))
+        append(" ")
+        append(year)
+    })
     }
 
     private fun fillCalendar(){
