@@ -114,7 +114,11 @@ class InsertMeal : AppCompatActivity() , MyListAdapterListener{
         }
 
         binding.buttonSendForm.setOnClickListener(){
-            createMeal()
+            if(removableList.size > 0){
+                createMeal()
+            }else{
+                Toast.makeText(applicationContext, getString(R.string.warning_empty_meal), Toast.LENGTH_LONG).show()
+            }
         }
     }
     override fun onUserInteraction() {
