@@ -78,7 +78,7 @@ class InsertMeal : AppCompatActivity() , MyListAdapterListener{
             timePicker.show(supportFragmentManager, "timePicker")
         }
 
-        binding.spinnerSelectMeal.onItemSelectedListener = object :
+        binding.spinnerSelectAllergen.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
@@ -94,7 +94,7 @@ class InsertMeal : AppCompatActivity() , MyListAdapterListener{
                             )
                         )
                     removableListAdapter.notifyDataSetChanged()
-                    binding.spinnerSelectMeal.setSelection(0)
+                    binding.spinnerSelectAllergen.setSelection(0)
                 }
             }
         }
@@ -234,7 +234,7 @@ class InsertMeal : AppCompatActivity() , MyListAdapterListener{
                     android.R.layout.simple_list_item_1, allergenSet.names
                 )
                 spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                binding.spinnerSelectMeal.adapter = spinnerAdapter
+                binding.spinnerSelectAllergen.adapter = spinnerAdapter
             }, Response.ErrorListener {
                 Log.d("Mainactivity", getString(R.string.api_call_unsuccessful)+it.toString())
             }
