@@ -131,7 +131,7 @@ class EventsInDay : AppCompatActivity() {
     private fun fillList(){
         items.clear()
         val url = Utils.composeUrl(
-            GUserId, "table/v_all_entries")
+            GUserId, "table/v_user_all_entries")
         val queue = Volley.newRequestQueue(this)
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
             Method.GET, url, null,

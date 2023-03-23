@@ -131,7 +131,7 @@ class InsertSymptom : AppCompatActivity() {
     private fun fillSymptoms(){
         var symptomSet : SymptomSet
         val url = Utils.composeUrl(
-            GUserId, "table/symptom_all_languages")
+            GUserId, "table/v_all_languages_symptom")
         val queue = Volley.newRequestQueue(this)
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
             Method.GET, url, null,

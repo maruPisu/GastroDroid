@@ -218,7 +218,7 @@ class InsertMeal : AppCompatActivity() , MyListAdapterListener{
 
     private fun fillAllergens(){
         val url = Utils.composeUrl(
-            GUserId, "table/allergen_all_languages")
+            GUserId, "table/v_all_languages_allergen")
         val queue = Volley.newRequestQueue(this)
         val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest(
             Method.GET, url, null,
