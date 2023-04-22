@@ -111,15 +111,6 @@ class EventsInDay : AppCompatActivity() {
             intent.putExtra("day",day)
             startActivity(intent)
         }
-
-        binding.floatingAddSupplement.setOnClickListener(){
-            val intent = Intent(this@EventsInDay, InsertSupplement::class.java).apply {}
-            intent.putExtra("user_id",gUser)
-            intent.putExtra("year",year)
-            intent.putExtra("month",month)
-            intent.putExtra("day",day)
-            startActivity(intent)
-        }
     }
 
     override fun onRestart() {

@@ -59,15 +59,6 @@
             app:fab_title="@string/add_meal_button"
             />
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingAddSupplement"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_colorNormal="#FFF"
-            app:fab_icon="@drawable/ic_plus"
-            app:fab_size="mini"
-            app:fab_title="@string/add_supplement_button"
-            />
-        <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingAddFeces"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
