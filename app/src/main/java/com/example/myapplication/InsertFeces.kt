@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.content.res.ResourcesCompat
 import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -23,6 +24,7 @@ class InsertFeces : AppCompatActivity() {
 
     class FecesSet{
         var names = arrayListOf<String>()
+        var descriptions = arrayListOf<String>()
         val IDs = arrayListOf<Int>()
     }
 
@@ -153,6 +155,21 @@ class InsertFeces : AppCompatActivity() {
                     }
                     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                         GFecesID = fecesSet.IDs.get(position)
+
+                        binding.fecesDescription.text = fecesSet.descriptions.get(position)
+
+                        val res = ResourcesCompat.getDrawable(resources,
+                            when (position) {
+                                0 -> R.drawable.type1_poop
+                                1 -> R.drawable.type2_poop
+                                2 -> R.drawable.type3_poop
+                                3 -> R.drawable.type4_poop
+                                4 -> R.drawable.type5_poop
+                                5 -> R.drawable.type6_poop
+                                6 -> R.drawable.type7_poop
+                                else -> {R.drawable.ic_remove}
+                            }, null)
+                        binding.imageFeces.setImageDrawable(res)
                     }
                 }
             }, Response.ErrorListener {
@@ -178,7 +195,11 @@ class InsertFeces : AppCompatActivity() {
             ret.names.add(when (GLanguage) {
                 Language.ENGLISH -> feces.get("name_en").toString()
                 Language.SPANISH -> feces.get("name_es").toString()
-        })
+            })
+            ret.descriptions.add(when (GLanguage) {
+                Language.ENGLISH -> feces.get("description_en").toString()
+                Language.SPANISH -> feces.get("description_es").toString()
+            })
             ret.IDs.add(feces.get("id").toString().toInt())
         }
         return ret

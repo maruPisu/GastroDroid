@@ -41,6 +41,21 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/select_feces_text" />
 
+    <ImageView
+        android:id="@+id/image_feces"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_select_feces" />
+
+    <TextView
+        android:id="@+id/feces_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_feces" />
+
     <Button
         android:id="@+id/buttonSendForm"
         android:layout_width="wrap_content"
