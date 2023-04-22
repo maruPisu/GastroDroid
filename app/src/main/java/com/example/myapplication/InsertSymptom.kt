@@ -22,6 +22,7 @@ class InsertSymptom : AppCompatActivity() {
 
     class SymptomSet{
         var names = arrayListOf<String>()
+        var descriptions = arrayListOf<String>()
         val IDs = arrayListOf<Int>()
     }
 
@@ -152,6 +153,8 @@ class InsertSymptom : AppCompatActivity() {
                     }
                     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                         gSymptomID = symptomSet.IDs.get(position)
+
+                        binding.symptomDescription.text = symptomSet.descriptions.get(position)
                     }
                 }
             }, Response.ErrorListener {
@@ -177,6 +180,10 @@ class InsertSymptom : AppCompatActivity() {
             ret.names.add(when (GLanguage) {
                 Language.ENGLISH -> symptom.get("name_en").toString()
                 Language.SPANISH -> symptom.get("name_es").toString()
+            })
+            ret.descriptions.add(when (GLanguage) {
+                Language.ENGLISH -> symptom.get("description_en").toString()
+                Language.SPANISH -> symptom.get("description_es").toString()
             })
             ret.IDs.add(symptom.get("id").toString().toInt())
         }
