@@ -1,10 +1,13 @@
 package com.example.myapplication
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
+import android.view.ViewGroup
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.AuthFailureError
 import com.android.volley.Response
@@ -20,10 +23,20 @@ import java.util.*
 
 class InsertSymptom : AppCompatActivity() {
 
-    class SymptomSet{
+    class SymptomSet
+        () {
         var names = arrayListOf<String>()
         var descriptions = arrayListOf<String>()
         val IDs = arrayListOf<Int>()
+        /*
+        dolor de cabeza
+        dolor epigástrico
+        dolor mesogástrico
+        dolor hipogástrico
+        gases
+        pesadez de estomago
+        saciedad precoz
+        * */
     }
 
     var gSymptomID : Int = 0
@@ -32,6 +45,7 @@ class InsertSymptom : AppCompatActivity() {
     var gYear : Int = 0
     var gHour : Int = 0
     var gMinute : Int = 0
+    var gSymptomSet : SymptomSet = SymptomSet()
 
     private lateinit var binding : ActivityInsertSymptomBinding
 
@@ -78,6 +92,9 @@ class InsertSymptom : AppCompatActivity() {
 
         binding.buttonSendForm.setOnClickListener(){
             createSymptom()
+        }
+        binding.buttonSelectSymptom.setOnClickListener(){
+            showPopupWindow(binding.buttonSelectSymptom, gSymptomSet.names)
         }
     }
     private fun onDateSelected(day:Int, month:Int, year:Int){
@@ -130,7 +147,6 @@ class InsertSymptom : AppCompatActivity() {
     }
 
     private fun fillSymptoms(){
-        var symptomSet : SymptomSet
         val url = Utils.composeUrl(
             GUserId, "table/v_all_languages_symptom")
         val queue = Volley.newRequestQueue(this)
@@ -138,25 +154,7 @@ class InsertSymptom : AppCompatActivity() {
             Method.GET, url, null,
             Response.Listener {
                 Log.d("Mainactivity", getString(R.string.api_call_successful))
-                symptomSet = parseJson(it)
-
-                val adp1: ArrayAdapter<String> = ArrayAdapter<String>(
-                    this,
-                    android.R.layout.simple_list_item_1, symptomSet.names
-                )
-                adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                binding.spinnerSelectSymptom.adapter = adp1
-
-                binding.spinnerSelectSymptom.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-                    }
-                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                        gSymptomID = symptomSet.IDs.get(position)
-
-                        binding.symptomDescription.text = symptomSet.descriptions.get(position)
-                    }
-                }
+                gSymptomSet = parseJson(it)
             }, Response.ErrorListener {
                 Log.d("Mainactivity", getString(R.string.api_call_unsuccessful)+it.toString())
             }
@@ -197,5 +195,40 @@ class InsertSymptom : AppCompatActivity() {
 
         binding.textDateTime.text = DateTimeFormatter.RFC_1123_DATE_TIME
             .format(zonedDateTime)
+    }
+
+    private fun showPopupWindow(view: View, items: List<String>) {
+        // Inflate the pop-up window layout
+        val popupView = LayoutInflater.from(view.context).inflate(R.layout.popup_window_layout, null)
+
+        // Create the pop-up window
+        val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+
+        // Set up the ListView
+        val listView = popupView.findViewById<ListView>(R.id.resultListView)
+        val adapter = ArrayAdapter(view.context, android.R.layout.simple_list_item_1, items)
+        listView.adapter = adapter
+
+        // Set up the search bar
+        val searchEditText = popupView.findViewById<EditText>(R.id.searchEditText)
+        searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                adapter.filter.filter(s)
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+        listView.setOnItemClickListener { parent, _, position, id ->
+            gSymptomID = gSymptomSet.IDs[position]
+            binding.textSymptom.text = gSymptomSet.names[position] //selectedItem.toString()
+            binding.symptomDescription.text = gSymptomSet.descriptions[position]
+
+            popupWindow.dismiss()
+        }
+
+        // Show the pop-up window
+        binding.textSymptom.text = ""
+        binding.symptomDescription.text = ""
+        popupWindow.showAsDropDown(view)
     }
 }

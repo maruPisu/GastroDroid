@@ -35,4 +35,5 @@
     <string name="delete_entry">Borrar Elemento</string>
     <string name="delete_entry_confirmation">¿Queres borrar este elemento?</string>
     <string name="warning_empty_meal">Por favor, selecciona por lo menos un alergeno</string>
+    <string name="search">Buscar</string>
 </resources>

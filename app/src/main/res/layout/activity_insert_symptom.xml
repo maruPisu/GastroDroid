@@ -25,7 +25,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_date_time"/>
 
-    <TextView
+    <!--TextView
         android:id="@+id/select_symptom_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,14 +39,37 @@
         android:layout_height="wrap_content"
         android:background="@android:drawable/btn_dropdown"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/select_symptom_text" />
+        app:layout_constraintTop_toBottomOf="@+id/select_symptom_text" / -->
+
+    <Button
+        android:id="@+id/button_select_symptom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_symptom"
+        tools:layout_editor_absoluteX="155dp"
+        tools:layout_editor_absoluteY="375dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSelectDate" />
+
+    <TextView
+        android:id="@+id/text_symptom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:text=""
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@+id/button_select_symptom" />
 
     <ImageView
         android:id="@+id/image_symptom"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_select_symptom" />
+        app:layout_constraintTop_toBottomOf="@+id/text_symptom"/>
 
     <TextView
         android:id="@+id/symptom_description"
