@@ -1,10 +1,9 @@
 package com.example.myapplication
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.AuthFailureError
@@ -16,9 +15,7 @@ import org.json.JSONObject
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import android.content.Context
-import android.view.View
-import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 
 
 class Events{
@@ -42,6 +39,14 @@ class EventsInDay : AppCompatActivity() {
     private var gUser : String = ""
     private lateinit var binding : ActivityEventsInDayBinding
     private lateinit var twoItemsListAdapter: TwoItemsListAdapter
+    private var dontFinish = true
+    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            dontFinish = true
+            binding.floatingActionsMenu.collapse()
+            fillList()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,7 +96,7 @@ class EventsInDay : AppCompatActivity() {
             intent.putExtra("year",year)
             intent.putExtra("month",month)
             intent.putExtra("day",day)
-            startActivity(intent)
+            startForResult.launch(intent)
         }
 
         binding.floatingAddMeal.setOnClickListener(){
@@ -100,7 +105,7 @@ class EventsInDay : AppCompatActivity() {
             intent.putExtra("year",year)
             intent.putExtra("month",month)
             intent.putExtra("day",day)
-            startActivity(intent)
+            startForResult.launch(intent)
         }
 
         binding.floatingAddFeces.setOnClickListener(){
@@ -109,14 +114,18 @@ class EventsInDay : AppCompatActivity() {
             intent.putExtra("year",year)
             intent.putExtra("month",month)
             intent.putExtra("day",day)
-            startActivity(intent)
+            startForResult.launch(intent)
         }
     }
 
-    override fun onRestart() {
-        super.onRestart()
-        binding.floatingActionsMenu.collapse()
-        fillList()
+    override fun onResume() {
+        super.onResume()
+        Log.d("AAA", "5")
+        if(!dontFinish){
+            finish()
+        }else{
+            dontFinish = false
+        }
     }
 
     private fun fillList(){

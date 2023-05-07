@@ -9,8 +9,7 @@
         android:id="@+id/searchEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/search"
-        android:inputType="TYPE_CLASS_TEXT" />
+        android:hint="@string/search"/>
 
     <ListView
         android:id="@+id/resultListView"

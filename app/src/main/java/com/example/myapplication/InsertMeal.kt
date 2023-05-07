@@ -1,5 +1,7 @@
 package com.example.myapplication
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -153,6 +155,9 @@ class InsertMeal : AppCompatActivity() , MyListAdapterListener{
         for (element in removableList){
             createAllergenInMeal(element)
         }
+        val returnIntent = Intent()
+        returnIntent.putExtra("return_data", 1)
+        setResult(Activity.RESULT_OK, returnIntent)
         finish()
     }
 

@@ -1,5 +1,7 @@
 package com.example.myapplication
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -143,6 +145,10 @@ class InsertSymptom : AppCompatActivity() {
             }
         }
         queue.add(jsonObjectRequest)
+
+        val returnIntent = Intent()
+        returnIntent.putExtra("return_data", 1)
+        setResult(Activity.RESULT_OK, returnIntent)
         finish()
     }
 
