@@ -2,6 +2,9 @@ package com.example.myapplication
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -155,6 +158,7 @@ class InsertFeces : AppCompatActivity() {
                 adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinnerSelectFeces.adapter = adp1
 
+                binding.spinnerSelectFeces.setSelection(3)
                 binding.spinnerSelectFeces.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                     override fun onNothingSelected(parent: AdapterView<*>?) {
 
@@ -163,7 +167,6 @@ class InsertFeces : AppCompatActivity() {
                         GFecesID = fecesSet.IDs.get(position)
 
                         binding.fecesDescription.text = fecesSet.descriptions.get(position)
-
                         val res = ResourcesCompat.getDrawable(resources,
                             when (position) {
                                 0 -> R.drawable.type1_poop
@@ -173,7 +176,7 @@ class InsertFeces : AppCompatActivity() {
                                 4 -> R.drawable.type5_poop
                                 5 -> R.drawable.type6_poop
                                 6 -> R.drawable.type7_poop
-                                else -> {R.drawable.ic_remove}
+                                else -> {R.drawable.empty}
                             }, null)
                         binding.imageFeces.setImageDrawable(res)
                     }
