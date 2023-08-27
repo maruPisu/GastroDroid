@@ -69,6 +69,17 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
                 val jsonObject = it
                 val data = jsonObject.getJSONObject("data")
                 intentPutExtra("name", data.get("name").toString())
+
+                // sign in official, lets set sharedPreferences
+
+                if(googleid == ""){
+                    // Username login
+                    setLoggedWithUsername(true, email, password, email)
+                }else{
+                    // Google login
+                    setLoggedWithGoogle(true)
+                }
+
                 signInDone(data.get("id").toString())
             }, Response.ErrorListener {
                 Log.d("Mainactivity", "Api call unsuccessful "+it.toString())
@@ -102,5 +113,38 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     // A placeholder password validation check
     private fun isPasswordValid(password: String): Boolean {
         return password.length > 5
+    }
+
+    private fun setLoggedWithGoogle(value: Boolean) {
+        val sharedPreferences = thisContext.getSharedPreferences("LogPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
+        editor.putBoolean("isLoggedWithGoogle", value)
+        if(value) {
+            // automatic username login is disable if google login is enabled
+            editor.putBoolean("isLoggedWithUsername", false)
+            editor.putString("username", "")
+            editor.putString("password", "")
+            editor.putString("email", "")
+        }
+
+        editor.apply()
+    }
+
+    private fun setLoggedWithUsername(value: Boolean, username: String?,
+                                      password: String?, email: String?) {
+        val sharedPreferences = thisContext.getSharedPreferences("LogPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
+        editor.putBoolean("isLoggedWithUsername", value)
+        editor.putString("username", username)
+        editor.putString("password", password)
+        editor.putString("email", email)
+        if(value) {
+            // automatic google login is disable if username login is enabled
+            editor.putBoolean("isLoggedWithGoogle", false)
+        }
+
+        editor.apply()
     }
 }

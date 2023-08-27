@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.login
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -37,6 +38,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .build()
@@ -51,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
 
         val username = binding.username
         val password = binding.password
-        val login = binding.login
+        val usernameLogin = binding.usernameLogin
         val loading = binding.loading
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
@@ -59,11 +61,24 @@ class LoginActivity : AppCompatActivity() {
 
         loginViewModel.initIntent(this)
 
+        if(isLoggedWithUsername()){
+            loginUsername(
+                getLoggedWithUsernameUsername(),
+                getLoggedWithUsernamePassword(),
+                getLoggedWithUsernameEmail())
+        }
+
+        // if previously logged in with google, relog directly
+        if(isLoggedWithGoogle()) {
+            val signInIntent = mGoogleSignInClient.signInIntent
+            resultLauncher.launch(signInIntent)
+        }
+
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
 
             // disable login button unless both username / password is valid
-            login.isEnabled = loginState.isDataValid
+            usernameLogin?.isEnabled = loginState.isDataValid
 
             if (loginState.usernameError != null) {
                 username.error = getString(loginState.usernameError)
@@ -115,17 +130,47 @@ class LoginActivity : AppCompatActivity() {
                 false
             }
 
-            login.setOnClickListener {
+            usernameLogin?.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                loginViewModel.intentPutExtra("photo","")
-                loginViewModel.intentPutExtra("email",username.text.toString())
-                // Request for user id
-                loginViewModel.loginCall(
-                    username.text.toString(),"",
-                    password.text.toString(), "")
-              //  loginViewModel.login(username.text.toString(), password.text.toString())
+                loginUsername(username.text.toString(), password.text.toString(),
+                    username.text.toString())
             }
         }
+    }
+
+    private fun loginUsername(username: String,password: String, email: String){
+        loginViewModel.intentPutExtra("photo","")
+        loginViewModel.intentPutExtra("email", email)
+        // Request for user id
+        loginViewModel.loginCall(
+            username,"",
+            password, "")
+        //  loginViewModel.login(username.text.toString(), password.text.toString())
+    }
+
+    private fun isLoggedWithGoogle(): Boolean {
+        val sharedPreferences = this.getSharedPreferences("LogPrefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getBoolean("isLoggedWithGoogle", false)
+    }
+
+    private fun isLoggedWithUsername(): Boolean {
+        val sharedPreferences = this.getSharedPreferences("LogPrefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getBoolean("isLoggedWithUsername", false)
+    }
+
+    private fun getLoggedWithUsernameUsername(): String {
+        val sharedPreferences = this.getSharedPreferences("LogPrefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("username", "").toString()
+    }
+
+    private fun getLoggedWithUsernamePassword(): String {
+        val sharedPreferences = this.getSharedPreferences("LogPrefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("password", "").toString()
+    }
+
+    private fun getLoggedWithUsernameEmail(): String {
+        val sharedPreferences = this.getSharedPreferences("LogPrefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("email", "").toString()
     }
 
     var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
