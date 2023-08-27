@@ -35,4 +35,6 @@
     <string name="delete_entry_confirmation">Do you really want to delete this entry?</string>
     <string name="warning_empty_meal">Please select at least one allergen</string>
     <string name="search">Search</string>
+    <string name="confirm">Confirmation</string>
+    <string name="log_off_question">Do you really want to log off?</string>
 </resources>

@@ -1,9 +1,11 @@
 package com.example.myapplication
 
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.PreferenceManager
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.squareup.picasso.Picasso
 import java.util.*
@@ -36,7 +38,32 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.buttonEventCalendar.setOnClickListener(){
+        // Log out from avatar
+        binding.avatar.setOnClickListener {
+            val alertDialogBuilder = AlertDialog.Builder(this)
+            alertDialogBuilder.setTitle(R.string.confirm)
+            alertDialogBuilder.setMessage(R.string.log_off_question)
+            alertDialogBuilder.setPositiveButton("OK") { dialog: DialogInterface, _: Int ->
+                val sharedPreferences = this.getSharedPreferences("LogPrefs", Context.MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+
+                editor.putBoolean("isLoggedWithGoogle", false)
+                editor.putBoolean("isLoggedWithUsername", false)
+
+                editor.apply()
+                dialog.dismiss() // Close the dialog
+                finish()
+            }
+            alertDialogBuilder.setNegativeButton("Cancel") { dialog: DialogInterface, _: Int ->
+                // Code to handle Cancel button click
+                dialog.dismiss() // Close the dialog
+            }
+
+            val alertDialog: AlertDialog = alertDialogBuilder.create()
+            alertDialog.show()
+        }
+
+        binding.buttonEventCalendar.setOnClickListener {
             val intent = Intent(this, EventCalendar::class.java).apply {}
             intent.putExtra("user_id",userId)
             startActivity(intent)
