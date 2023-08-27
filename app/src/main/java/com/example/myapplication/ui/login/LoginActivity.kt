@@ -43,8 +43,8 @@ class LoginActivity : AppCompatActivity() {
         // Build a GoogleSignInClient with the options specified by gso.
         val mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        binding.loginButton.setSize(SignInButton.SIZE_WIDE)
-        binding.loginButton.setOnClickListener{
+        binding.googleLoginButton.setSize(SignInButton.SIZE_WIDE)
+        binding.googleLoginButton.setOnClickListener{
             val signInIntent = mGoogleSignInClient.signInIntent
             resultLauncher.launch(signInIntent)
         }
@@ -120,13 +120,16 @@ class LoginActivity : AppCompatActivity() {
                 loginViewModel.intentPutExtra("photo","")
                 loginViewModel.intentPutExtra("email",username.text.toString())
                 // Request for user id
-                loginViewModel.loginCall(username.text.toString(),"",password.text.toString(), "")
+                loginViewModel.loginCall(
+                    username.text.toString(),"",
+                    password.text.toString(), "")
               //  loginViewModel.login(username.text.toString(), password.text.toString())
             }
         }
     }
 
-    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+    { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             // There are no request codes
             val data: Intent? = result.data
