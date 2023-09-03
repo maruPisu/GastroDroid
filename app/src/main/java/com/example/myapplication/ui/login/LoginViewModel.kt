@@ -8,12 +8,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
+import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import com.android.volley.AuthFailureError
-import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.RequestFuture
 import com.android.volley.toolbox.Volley
 import com.example.myapplication.MainActivity
 import com.example.myapplication.data.LoginRepository
@@ -75,6 +74,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
                 if(googleid == ""){
                     // Username login
                     setLoggedWithUsername(true, email, password, email)
+
                 }else{
                     // Google login
                     setLoggedWithGoogle(true)
@@ -82,6 +82,8 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
                 signInDone(data.get("id").toString())
             }, Response.ErrorListener {
+                setLoggedWithUsername(false, "", "", "")
+                Toast.makeText(thisContext, R.string.password_incorrect, Toast.LENGTH_LONG).show()
                 Log.d("Mainactivity", "Api call unsuccessful "+it.toString())
             }
         ){

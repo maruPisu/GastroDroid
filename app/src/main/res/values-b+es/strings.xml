@@ -38,4 +38,5 @@
     <string name="search">Buscar</string>
     <string name="confirm">Confirmar</string>
     <string name="log_off_question">¿Realmente deseas cerrar sesión?</string>
+    <string name="password_incorrect">El nombre de usuario o contraseña no son correctos</string>
 </resources>
