@@ -23,6 +23,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import java.security.MessageDigest
 
 
 const val RC_SIGN_IN = 123
@@ -107,7 +108,7 @@ class LoginActivity : AppCompatActivity() {
         username.afterTextChanged {
             loginViewModel.loginDataChanged(
                 username.text.toString(),
-                password.text.toString()
+                hashPassword(password.text.toString())
             )
         }
 
@@ -115,7 +116,7 @@ class LoginActivity : AppCompatActivity() {
             afterTextChanged {
                 loginViewModel.loginDataChanged(
                     username.text.toString(),
-                    password.text.toString()
+                    hashPassword(password.text.toString())
                 )
             }
 
@@ -124,18 +125,27 @@ class LoginActivity : AppCompatActivity() {
                     EditorInfo.IME_ACTION_DONE ->
                         loginViewModel.loginCall(
                             username.text.toString(),"",
-                            password.text.toString(), ""
+                            hashPassword(password.text.toString()), ""
                         )
                 }
                 false
             }
 
-            usernameLogin?.setOnClickListener {
+            usernameLogin?.setOnClickListener{
                 loading.visibility = View.VISIBLE
-                loginUsername(username.text.toString(), password.text.toString(),
+                loginUsername(username.text.toString(),
+                    hashPassword(password.text.toString()),
                     username.text.toString())
+                loading.visibility = View.GONE
             }
         }
+    }
+
+    private fun hashPassword(plaintext: String): String{
+        val byteArrayPlaintext = plaintext.toByteArray()
+        val messageDigest = MessageDigest.getInstance("SHA-256")
+        val digest = messageDigest.digest(byteArrayPlaintext)
+        return digest.fold("") { str, it -> str + "%02x".format(it) }
     }
 
     private fun loginUsername(username: String,password: String, email: String){
@@ -145,7 +155,6 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loginCall(
             username,"",
             password, "")
-        //  loginViewModel.login(username.text.toString(), password.text.toString())
     }
 
     private fun isLoggedWithGoogle(): Boolean {
