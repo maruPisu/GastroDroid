@@ -52,8 +52,8 @@ class LoginActivity : AppCompatActivity() {
             resultLauncher.launch(signInIntent)
         }
 
-        val username = binding.username
-        val password = binding.password
+        val passwordLayout = binding.etPasswordLayout
+        val usernameLayout = binding.etUsernameLayout
         val usernameLogin = binding.usernameLogin
         val loading = binding.loading
 
@@ -75,20 +75,6 @@ class LoginActivity : AppCompatActivity() {
             resultLauncher.launch(signInIntent)
         }
 
-        loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
-            val loginState = it ?: return@Observer
-
-            // disable login button unless both username / password is valid
-            usernameLogin?.isEnabled = loginState.isDataValid
-
-            if (loginState.usernameError != null) {
-                username.error = getString(loginState.usernameError)
-            }
-            if (loginState.passwordError != null) {
-                password.error = getString(loginState.passwordError)
-            }
-        })
-
         loginViewModel.loginResult.observe(this@LoginActivity, Observer {
             val loginResult = it ?: return@Observer
 
@@ -105,39 +91,12 @@ class LoginActivity : AppCompatActivity() {
             finish()
         })
 
-        username.afterTextChanged {
-            loginViewModel.loginDataChanged(
-                username.text.toString(),
-                hashPassword(password.text.toString())
-            )
-        }
-
-        password.apply {
-            afterTextChanged {
-                loginViewModel.loginDataChanged(
-                    username.text.toString(),
-                    hashPassword(password.text.toString())
-                )
-            }
-
-            setOnEditorActionListener { _, actionId, _ ->
-                when (actionId) {
-                    EditorInfo.IME_ACTION_DONE ->
-                        loginViewModel.loginCall(
-                            username.text.toString(),"",
-                            hashPassword(password.text.toString()), ""
-                        )
-                }
-                false
-            }
-
-            usernameLogin?.setOnClickListener{
-                loading.visibility = View.VISIBLE
-                loginUsername(username.text.toString(),
-                    hashPassword(password.text.toString()),
-                    username.text.toString())
-                loading.visibility = View.GONE
-            }
+        usernameLogin?.setOnClickListener{
+            loading.visibility = View.VISIBLE
+            loginUsername(usernameLayout?.editText?.text.toString(),
+                hashPassword(passwordLayout?.editText?.text.toString()),
+                usernameLayout?.editText?.text.toString())
+            loading.visibility = View.GONE
         }
     }
 

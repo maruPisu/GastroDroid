@@ -38,4 +38,5 @@
     <string name="confirm">Confirmation</string>
     <string name="log_off_question">Do you really want to log off?</string>
     <string name="password_incorrect">Username or Password incorrect</string>
+    <string name="fragment_login_password_hint">Password</string> 
 </resources>
